@@ -10,16 +10,44 @@ public class FlightService : IFlightService
         _repository = repository;
     }
 
+    //public async Task<List<FlightDtos>> GetAllFlightsAsync()
+    //{
+    //    var flights = await _repository.GetAllFlightsAsync();
+    //    return flights.Select(f => new FlightDtos
+    //    {
+    //        Id = f.Id,
+    //        Number = f.Number,
+    //        Status = f.Status.ToString(),
+    //        TotalSeats = f.Seats.Count,
+    //        AssignedSeats = f.Seats.Count(s => s.IsAssigned)
+    //    }).ToList();
+
+    //}
     public async Task<List<FlightDtos>> GetAllFlightsAsync()
     {
-        var flights = await _repository.GetAllFlightsAsync();
+        var flights = await _repository.GetAllFlightsAsync(); // Include Seats and Passengers!
         return flights.Select(f => new FlightDtos
         {
             Id = f.Id,
             Number = f.Number,
             Status = f.Status.ToString(),
             TotalSeats = f.Seats.Count,
-            AssignedSeats = f.Seats.Count(s => s.IsAssigned)
+            AssignedSeats = f.Seats.Count(s => s.IsAssigned),
+            Seats = f.Seats.Select(s => new SeatDtos
+            {
+                Id = s.Id,
+                SeatNumber = s.Code,
+                IsAssigned = s.IsAssigned
+            }).ToList(),
+
+            Passengers = f.Passengers.Select(p => new PassengerDto
+            {
+                Id = p.Id,
+                Name = p.Name,
+                PassportNumber = p.PassportNumber,
+                SeatCode = p.Seat?.Code,
+                FlightNumber = f.Number
+            }).ToList()
         }).ToList();
 
     }

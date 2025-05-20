@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using FlightLibrary.DTO;
+using Microsoft.EntityFrameworkCore;
 
 [ApiController]
 [Route("api/[controller]")]
@@ -26,4 +27,6 @@ public class FlightsController : ControllerBase
         if (!result) return NotFound();
         return NoContent();
     }
+
+
 }

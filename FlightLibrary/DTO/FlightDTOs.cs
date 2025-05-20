@@ -14,5 +14,11 @@ namespace FlightLibrary.DTO
         public int TotalSeats { get; set; }
         public int AssignedSeats { get; set; }
         public int AvailableSeats => TotalSeats - AssignedSeats;
+        public List<SeatDtos> Seats { get; set; } = new();
+
+        public List<PassengerDto> Passengers { get; set; } = new();
+
+        public int PassengersCount => Passengers.Count;
     }
+
 }

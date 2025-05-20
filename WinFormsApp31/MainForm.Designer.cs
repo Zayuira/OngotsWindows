@@ -33,7 +33,7 @@ partial class MainForm
         SearchTableLayout = new TableLayoutPanel();
         SearchTextBox = new TextBox();
         SearchButton = new Button();
-        ResultPassenger = new FlowLayoutPanel();
+        ResultPassengerFlowPanel = new FlowLayoutPanel();
         ButtonTable = new TableLayoutPanel();
         PrintButton = new Button();
         CheckButton = new Button();
@@ -127,7 +127,7 @@ partial class MainForm
         SearchTableLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 30F));
         SearchTableLayout.Controls.Add(SearchTextBox, 0, 0);
         SearchTableLayout.Controls.Add(SearchButton, 1, 0);
-        SearchTableLayout.Controls.Add(ResultPassenger, 0, 1);
+        SearchTableLayout.Controls.Add(ResultPassengerFlowPanel, 0, 1);
         SearchTableLayout.Dock = DockStyle.Fill;
         SearchTableLayout.Location = new Point(3, 3);
         SearchTableLayout.Name = "SearchTableLayout";
@@ -144,6 +144,7 @@ partial class MainForm
         SearchTextBox.Name = "SearchTextBox";
         SearchTextBox.Size = new Size(211, 27);
         SearchTextBox.TabIndex = 0;
+        SearchTextBox.TextAlign = HorizontalAlignment.Right;
         // 
         // SearchButton
         // 
@@ -154,14 +155,15 @@ partial class MainForm
         SearchButton.TabIndex = 1;
         SearchButton.Text = "Хайх";
         SearchButton.UseVisualStyleBackColor = true;
+        SearchButton.Click += SearchButton_Click;
         // 
-        // ResultPassenger
+        // ResultPassengerFlowPanel
         // 
-        ResultPassenger.Dock = DockStyle.Fill;
-        ResultPassenger.Location = new Point(3, 39);
-        ResultPassenger.Name = "ResultPassenger";
-        ResultPassenger.Size = new Size(211, 78);
-        ResultPassenger.TabIndex = 2;
+        ResultPassengerFlowPanel.Dock = DockStyle.Fill;
+        ResultPassengerFlowPanel.Location = new Point(3, 39);
+        ResultPassengerFlowPanel.Name = "ResultPassengerFlowPanel";
+        ResultPassengerFlowPanel.Size = new Size(211, 78);
+        ResultPassengerFlowPanel.TabIndex = 2;
         // 
         // ButtonTable
         // 
@@ -771,7 +773,7 @@ partial class MainForm
     private TableLayoutPanel SearchTableLayout;
     private TextBox SearchTextBox;
     private Button SearchButton;
-    private FlowLayoutPanel ResultPassenger;
+    private FlowLayoutPanel ResultPassengerFlowPanel;
     private TableLayoutPanel ButtonTable;
     private Button PrintButton;
     private Button CheckButton;
