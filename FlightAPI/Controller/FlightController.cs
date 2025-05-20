@@ -9,6 +9,7 @@ using FlightAPI.Services;
 
 namespace FlightAPI.Controller
 {
+    // helli whatt whyy nottt pullllliinnn
     [Route("api/[controller]")]
     [ApiController]
     public class FlightController : ControllerBase
