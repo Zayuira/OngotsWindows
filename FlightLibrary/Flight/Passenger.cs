@@ -15,5 +15,15 @@ namespace FlightLibrary
         public int FlightId { get; set; }
         public Seat? Seat { get; set; }
         public Flight? Flight { get; set; }
+        public Passenger(int id, string passportNumber, string name, int? seatId, int flightId, Seat? seat, Flight? flight)
+        {
+            Id = id;
+            PassportNumber = passportNumber;
+            Name = name;
+            SeatId = seatId;
+            FlightId = flightId;
+            Seat = seat;
+            Flight = flight;
+        }
     }
 }

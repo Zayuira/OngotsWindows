@@ -30,22 +30,23 @@
         {
             tableLayoutPanel1 = new TableLayoutPanel();
             groupBox1 = new GroupBox();
+            comboBox_Status = new ComboBox();
             button3 = new Button();
             label2 = new Label();
             button2 = new Button();
             textBox_HubURL = new TextBox();
             label_ConnectionStatus = new Label();
             textBox_FlightNumber = new TextBox();
-            comboBox_Status = new ComboBox();
             tableLayoutPanel1.SuspendLayout();
             groupBox1.SuspendLayout();
             SuspendLayout();
             // 
             // tableLayoutPanel1
             // 
-            tableLayoutPanel1.ColumnCount = 2;
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 23.5239849F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 76.47601F));
+            tableLayoutPanel1.ColumnCount = 3;
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 34F));
             tableLayoutPanel1.Controls.Add(groupBox1, 1, 1);
             tableLayoutPanel1.Dock = DockStyle.Fill;
             tableLayoutPanel1.Location = new Point(0, 0);
@@ -65,15 +66,22 @@
             groupBox1.Controls.Add(textBox_HubURL);
             groupBox1.Controls.Add(label_ConnectionStatus);
             groupBox1.Controls.Add(textBox_FlightNumber);
-            groupBox1.Dock = DockStyle.Fill;
-            groupBox1.Location = new Point(257, 71);
+            groupBox1.Location = new Point(359, 71);
             groupBox1.Margin = new Padding(2);
             groupBox1.Name = "groupBox1";
             groupBox1.Padding = new Padding(2);
-            groupBox1.Size = new Size(825, 377);
+            groupBox1.Size = new Size(353, 377);
             groupBox1.TabIndex = 10;
             groupBox1.TabStop = false;
             groupBox1.Text = "Flight status";
+            // 
+            // comboBox_Status
+            // 
+            comboBox_Status.FormattingEnabled = true;
+            comboBox_Status.Location = new Point(56, 257);
+            comboBox_Status.Name = "comboBox_Status";
+            comboBox_Status.Size = new Size(288, 28);
+            comboBox_Status.TabIndex = 10;
             // 
             // button3
             // 
@@ -135,14 +143,6 @@
             textBox_FlightNumber.Size = new Size(289, 27);
             textBox_FlightNumber.TabIndex = 5;
             // 
-            // comboBox_Status
-            // 
-            comboBox_Status.FormattingEnabled = true;
-            comboBox_Status.Location = new Point(56, 257);
-            comboBox_Status.Name = "comboBox_Status";
-            comboBox_Status.Size = new Size(288, 28);
-            comboBox_Status.TabIndex = 10;
-            // 
             // StateChangeForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -151,6 +151,7 @@
             Controls.Add(tableLayoutPanel1);
             Name = "StateChangeForm";
             Text = "StateChangeForm";
+            Load += StateChangeForm_Load;
             tableLayoutPanel1.ResumeLayout(false);
             groupBox1.ResumeLayout(false);
             groupBox1.PerformLayout();

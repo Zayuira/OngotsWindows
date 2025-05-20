@@ -36,5 +36,13 @@ namespace FlightLibrary
         }
         public ICollection<Passenger> Passengers { get; set; } = new List<Passenger>();
         public ICollection<Seat> Seats { get; set; } = new List<Seat>();
+        public Flight(int id, string number, string status, ICollection<Passenger> passengers, ICollection<Seat> seats)
+        {
+            Id = id;
+            Number = number;
+            Status = status;
+            Passengers = passengers;
+            Seats = seats;
+        }
     }
 }

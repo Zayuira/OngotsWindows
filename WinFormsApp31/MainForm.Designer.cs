@@ -37,6 +37,9 @@ partial class MainForm
         ButtonTable = new TableLayoutPanel();
         PrintButton = new Button();
         CheckButton = new Button();
+        ChangeStateButton = new Button();
+        FlightTableLayout = new TableLayoutPanel();
+        FlightListFlowPanel = new FlowLayoutPanel();
         tableLayoutPanel1 = new TableLayoutPanel();
         Seat40 = new Button();
         Seat39 = new Button();
@@ -78,10 +81,10 @@ partial class MainForm
         Seat3 = new Button();
         Seat2 = new Button();
         Seat1 = new Button();
-        ChangeStateButton = new Button();
         MainTableLayout.SuspendLayout();
         SearchTableLayout.SuspendLayout();
         ButtonTable.SuspendLayout();
+        FlightTableLayout.SuspendLayout();
         tableLayoutPanel1.SuspendLayout();
         SuspendLayout();
         // 
@@ -104,8 +107,8 @@ partial class MainForm
         MainTableLayout.Controls.Add(blazorWebView1, 1, 1);
         MainTableLayout.Controls.Add(SearchTableLayout, 0, 0);
         MainTableLayout.Controls.Add(ButtonTable, 0, 2);
-        MainTableLayout.Controls.Add(tableLayoutPanel1, 0, 1);
         MainTableLayout.Controls.Add(ChangeStateButton, 1, 2);
+        MainTableLayout.Controls.Add(FlightTableLayout, 0, 1);
         MainTableLayout.Dock = DockStyle.Fill;
         MainTableLayout.Location = new Point(0, 0);
         MainTableLayout.Name = "MainTableLayout";
@@ -197,6 +200,43 @@ partial class MainForm
         CheckButton.Text = "Баталгаажуулах";
         CheckButton.UseVisualStyleBackColor = true;
         // 
+        // ChangeStateButton
+        // 
+        ChangeStateButton.Dock = DockStyle.Fill;
+        ChangeStateButton.Location = new Point(320, 571);
+        ChangeStateButton.Name = "ChangeStateButton";
+        ChangeStateButton.Size = new Size(947, 58);
+        ChangeStateButton.TabIndex = 13;
+        ChangeStateButton.Text = "Төлөв Өөрчлөх";
+        ChangeStateButton.UseVisualStyleBackColor = true;
+        ChangeStateButton.Click += ChangeStateButton_Click;
+        // 
+        // FlightTableLayout
+        // 
+        FlightTableLayout.BackColor = SystemColors.AppWorkspace;
+        FlightTableLayout.ColumnCount = 1;
+        FlightTableLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+        FlightTableLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 20F));
+        FlightTableLayout.Controls.Add(FlightListFlowPanel, 0, 0);
+        FlightTableLayout.Controls.Add(tableLayoutPanel1, 0, 1);
+        FlightTableLayout.Dock = DockStyle.Fill;
+        FlightTableLayout.Location = new Point(3, 129);
+        FlightTableLayout.Name = "FlightTableLayout";
+        FlightTableLayout.RowCount = 2;
+        FlightTableLayout.RowStyles.Add(new RowStyle(SizeType.Percent, 25.2293587F));
+        FlightTableLayout.RowStyles.Add(new RowStyle(SizeType.Percent, 74.7706451F));
+        FlightTableLayout.Size = new Size(311, 436);
+        FlightTableLayout.TabIndex = 14;
+        // 
+        // FlightListFlowPanel
+        // 
+        FlightListFlowPanel.AutoScroll = true;
+        FlightListFlowPanel.Dock = DockStyle.Fill;
+        FlightListFlowPanel.Location = new Point(3, 3);
+        FlightListFlowPanel.Name = "FlightListFlowPanel";
+        FlightListFlowPanel.Size = new Size(305, 104);
+        FlightListFlowPanel.TabIndex = 13;
+        // 
         // tableLayoutPanel1
         // 
         tableLayoutPanel1.BackColor = SystemColors.ControlLight;
@@ -247,7 +287,7 @@ partial class MainForm
         tableLayoutPanel1.Controls.Add(Seat2, 1, 0);
         tableLayoutPanel1.Controls.Add(Seat1, 0, 0);
         tableLayoutPanel1.Dock = DockStyle.Fill;
-        tableLayoutPanel1.Location = new Point(3, 129);
+        tableLayoutPanel1.Location = new Point(3, 113);
         tableLayoutPanel1.Name = "tableLayoutPanel1";
         tableLayoutPanel1.RowCount = 10;
         tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 10F));
@@ -261,16 +301,17 @@ partial class MainForm
         tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 10F));
         tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 10F));
         tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-        tableLayoutPanel1.Size = new Size(311, 436);
+        tableLayoutPanel1.Size = new Size(305, 320);
         tableLayoutPanel1.TabIndex = 12;
+        tableLayoutPanel1.Visible = false;
         // 
         // Seat40
         // 
         Seat40.BackColor = SystemColors.ActiveBorder;
         Seat40.Dock = DockStyle.Fill;
-        Seat40.Location = new Point(251, 390);
+        Seat40.Location = new Point(247, 291);
         Seat40.Name = "Seat40";
-        Seat40.Size = new Size(57, 43);
+        Seat40.Size = new Size(55, 26);
         Seat40.TabIndex = 49;
         Seat40.Text = "40";
         Seat40.UseVisualStyleBackColor = false;
@@ -279,9 +320,9 @@ partial class MainForm
         // 
         Seat39.BackColor = SystemColors.ActiveBorder;
         Seat39.Dock = DockStyle.Fill;
-        Seat39.Location = new Point(189, 390);
+        Seat39.Location = new Point(186, 291);
         Seat39.Name = "Seat39";
-        Seat39.Size = new Size(56, 43);
+        Seat39.Size = new Size(55, 26);
         Seat39.TabIndex = 48;
         Seat39.Text = "39";
         Seat39.UseVisualStyleBackColor = false;
@@ -290,9 +331,9 @@ partial class MainForm
         // 
         Seat38.BackColor = SystemColors.ActiveBorder;
         Seat38.Dock = DockStyle.Fill;
-        Seat38.Location = new Point(65, 390);
+        Seat38.Location = new Point(64, 291);
         Seat38.Name = "Seat38";
-        Seat38.Size = new Size(56, 43);
+        Seat38.Size = new Size(55, 26);
         Seat38.TabIndex = 46;
         Seat38.Text = "38";
         Seat38.UseVisualStyleBackColor = false;
@@ -301,9 +342,9 @@ partial class MainForm
         // 
         Seat37.BackColor = SystemColors.ActiveBorder;
         Seat37.Dock = DockStyle.Fill;
-        Seat37.Location = new Point(3, 390);
+        Seat37.Location = new Point(3, 291);
         Seat37.Name = "Seat37";
-        Seat37.Size = new Size(56, 43);
+        Seat37.Size = new Size(55, 26);
         Seat37.TabIndex = 45;
         Seat37.Text = "37";
         Seat37.UseVisualStyleBackColor = false;
@@ -312,9 +353,9 @@ partial class MainForm
         // 
         Seat36.BackColor = SystemColors.ActiveBorder;
         Seat36.Dock = DockStyle.Fill;
-        Seat36.Location = new Point(251, 347);
+        Seat36.Location = new Point(247, 259);
         Seat36.Name = "Seat36";
-        Seat36.Size = new Size(57, 37);
+        Seat36.Size = new Size(55, 26);
         Seat36.TabIndex = 44;
         Seat36.Text = "36";
         Seat36.UseVisualStyleBackColor = false;
@@ -323,9 +364,9 @@ partial class MainForm
         // 
         Seat35.BackColor = SystemColors.ActiveBorder;
         Seat35.Dock = DockStyle.Fill;
-        Seat35.Location = new Point(189, 347);
+        Seat35.Location = new Point(186, 259);
         Seat35.Name = "Seat35";
-        Seat35.Size = new Size(56, 37);
+        Seat35.Size = new Size(55, 26);
         Seat35.TabIndex = 43;
         Seat35.Text = "35";
         Seat35.UseVisualStyleBackColor = false;
@@ -334,9 +375,9 @@ partial class MainForm
         // 
         Seat34.BackColor = SystemColors.ActiveBorder;
         Seat34.Dock = DockStyle.Fill;
-        Seat34.Location = new Point(65, 347);
+        Seat34.Location = new Point(64, 259);
         Seat34.Name = "Seat34";
-        Seat34.Size = new Size(56, 37);
+        Seat34.Size = new Size(55, 26);
         Seat34.TabIndex = 41;
         Seat34.Text = "34";
         Seat34.UseVisualStyleBackColor = false;
@@ -345,9 +386,9 @@ partial class MainForm
         // 
         Seat33.BackColor = SystemColors.ActiveBorder;
         Seat33.Dock = DockStyle.Fill;
-        Seat33.Location = new Point(3, 347);
+        Seat33.Location = new Point(3, 259);
         Seat33.Name = "Seat33";
-        Seat33.Size = new Size(56, 37);
+        Seat33.Size = new Size(55, 26);
         Seat33.TabIndex = 40;
         Seat33.Text = "33";
         Seat33.UseVisualStyleBackColor = false;
@@ -356,9 +397,9 @@ partial class MainForm
         // 
         Seat32.BackColor = SystemColors.ActiveBorder;
         Seat32.Dock = DockStyle.Fill;
-        Seat32.Location = new Point(251, 304);
+        Seat32.Location = new Point(247, 227);
         Seat32.Name = "Seat32";
-        Seat32.Size = new Size(57, 37);
+        Seat32.Size = new Size(55, 26);
         Seat32.TabIndex = 39;
         Seat32.Text = "32";
         Seat32.UseVisualStyleBackColor = false;
@@ -367,9 +408,9 @@ partial class MainForm
         // 
         Seat31.BackColor = SystemColors.ActiveBorder;
         Seat31.Dock = DockStyle.Fill;
-        Seat31.Location = new Point(189, 304);
+        Seat31.Location = new Point(186, 227);
         Seat31.Name = "Seat31";
-        Seat31.Size = new Size(56, 37);
+        Seat31.Size = new Size(55, 26);
         Seat31.TabIndex = 38;
         Seat31.Text = "31";
         Seat31.UseVisualStyleBackColor = false;
@@ -378,9 +419,9 @@ partial class MainForm
         // 
         Seat30.BackColor = SystemColors.ActiveBorder;
         Seat30.Dock = DockStyle.Fill;
-        Seat30.Location = new Point(65, 304);
+        Seat30.Location = new Point(64, 227);
         Seat30.Name = "Seat30";
-        Seat30.Size = new Size(56, 37);
+        Seat30.Size = new Size(55, 26);
         Seat30.TabIndex = 36;
         Seat30.Text = "30";
         Seat30.UseVisualStyleBackColor = false;
@@ -389,9 +430,9 @@ partial class MainForm
         // 
         Seat29.BackColor = SystemColors.ActiveBorder;
         Seat29.Dock = DockStyle.Fill;
-        Seat29.Location = new Point(3, 304);
+        Seat29.Location = new Point(3, 227);
         Seat29.Name = "Seat29";
-        Seat29.Size = new Size(56, 37);
+        Seat29.Size = new Size(55, 26);
         Seat29.TabIndex = 35;
         Seat29.Text = "29";
         Seat29.UseVisualStyleBackColor = false;
@@ -400,9 +441,9 @@ partial class MainForm
         // 
         Seat28.BackColor = SystemColors.ActiveBorder;
         Seat28.Dock = DockStyle.Fill;
-        Seat28.Location = new Point(251, 261);
+        Seat28.Location = new Point(247, 195);
         Seat28.Name = "Seat28";
-        Seat28.Size = new Size(57, 37);
+        Seat28.Size = new Size(55, 26);
         Seat28.TabIndex = 34;
         Seat28.Text = "28";
         Seat28.UseVisualStyleBackColor = false;
@@ -411,9 +452,9 @@ partial class MainForm
         // 
         Seat27.BackColor = SystemColors.ActiveBorder;
         Seat27.Dock = DockStyle.Fill;
-        Seat27.Location = new Point(189, 261);
+        Seat27.Location = new Point(186, 195);
         Seat27.Name = "Seat27";
-        Seat27.Size = new Size(56, 37);
+        Seat27.Size = new Size(55, 26);
         Seat27.TabIndex = 33;
         Seat27.Text = "27";
         Seat27.UseVisualStyleBackColor = false;
@@ -422,9 +463,9 @@ partial class MainForm
         // 
         Seat26.BackColor = SystemColors.ActiveBorder;
         Seat26.Dock = DockStyle.Fill;
-        Seat26.Location = new Point(65, 261);
+        Seat26.Location = new Point(64, 195);
         Seat26.Name = "Seat26";
-        Seat26.Size = new Size(56, 37);
+        Seat26.Size = new Size(55, 26);
         Seat26.TabIndex = 31;
         Seat26.Text = "26";
         Seat26.UseVisualStyleBackColor = false;
@@ -433,9 +474,9 @@ partial class MainForm
         // 
         Seat25.BackColor = SystemColors.ActiveBorder;
         Seat25.Dock = DockStyle.Fill;
-        Seat25.Location = new Point(3, 261);
+        Seat25.Location = new Point(3, 195);
         Seat25.Name = "Seat25";
-        Seat25.Size = new Size(56, 37);
+        Seat25.Size = new Size(55, 26);
         Seat25.TabIndex = 30;
         Seat25.Text = "25";
         Seat25.UseVisualStyleBackColor = false;
@@ -444,9 +485,9 @@ partial class MainForm
         // 
         Seat24.BackColor = SystemColors.ActiveBorder;
         Seat24.Dock = DockStyle.Fill;
-        Seat24.Location = new Point(251, 218);
+        Seat24.Location = new Point(247, 163);
         Seat24.Name = "Seat24";
-        Seat24.Size = new Size(57, 37);
+        Seat24.Size = new Size(55, 26);
         Seat24.TabIndex = 29;
         Seat24.Text = "24";
         Seat24.UseVisualStyleBackColor = false;
@@ -455,9 +496,9 @@ partial class MainForm
         // 
         Seat23.BackColor = SystemColors.ActiveBorder;
         Seat23.Dock = DockStyle.Fill;
-        Seat23.Location = new Point(189, 218);
+        Seat23.Location = new Point(186, 163);
         Seat23.Name = "Seat23";
-        Seat23.Size = new Size(56, 37);
+        Seat23.Size = new Size(55, 26);
         Seat23.TabIndex = 28;
         Seat23.Text = "23";
         Seat23.UseVisualStyleBackColor = false;
@@ -466,9 +507,9 @@ partial class MainForm
         // 
         Seat22.BackColor = SystemColors.ActiveBorder;
         Seat22.Dock = DockStyle.Fill;
-        Seat22.Location = new Point(65, 218);
+        Seat22.Location = new Point(64, 163);
         Seat22.Name = "Seat22";
-        Seat22.Size = new Size(56, 37);
+        Seat22.Size = new Size(55, 26);
         Seat22.TabIndex = 26;
         Seat22.Text = "22";
         Seat22.UseVisualStyleBackColor = false;
@@ -477,9 +518,9 @@ partial class MainForm
         // 
         Seat21.BackColor = SystemColors.ActiveBorder;
         Seat21.Dock = DockStyle.Fill;
-        Seat21.Location = new Point(3, 218);
+        Seat21.Location = new Point(3, 163);
         Seat21.Name = "Seat21";
-        Seat21.Size = new Size(56, 37);
+        Seat21.Size = new Size(55, 26);
         Seat21.TabIndex = 25;
         Seat21.Text = "21";
         Seat21.UseVisualStyleBackColor = false;
@@ -488,9 +529,9 @@ partial class MainForm
         // 
         Seat20.BackColor = SystemColors.ActiveBorder;
         Seat20.Dock = DockStyle.Fill;
-        Seat20.Location = new Point(251, 175);
+        Seat20.Location = new Point(247, 131);
         Seat20.Name = "Seat20";
-        Seat20.Size = new Size(57, 37);
+        Seat20.Size = new Size(55, 26);
         Seat20.TabIndex = 24;
         Seat20.Text = "20";
         Seat20.UseVisualStyleBackColor = false;
@@ -499,9 +540,9 @@ partial class MainForm
         // 
         Seat19.BackColor = SystemColors.ActiveBorder;
         Seat19.Dock = DockStyle.Fill;
-        Seat19.Location = new Point(189, 175);
+        Seat19.Location = new Point(186, 131);
         Seat19.Name = "Seat19";
-        Seat19.Size = new Size(56, 37);
+        Seat19.Size = new Size(55, 26);
         Seat19.TabIndex = 23;
         Seat19.Text = "19";
         Seat19.UseVisualStyleBackColor = false;
@@ -510,9 +551,9 @@ partial class MainForm
         // 
         Seat18.BackColor = SystemColors.ActiveBorder;
         Seat18.Dock = DockStyle.Fill;
-        Seat18.Location = new Point(65, 175);
+        Seat18.Location = new Point(64, 131);
         Seat18.Name = "Seat18";
-        Seat18.Size = new Size(56, 37);
+        Seat18.Size = new Size(55, 26);
         Seat18.TabIndex = 21;
         Seat18.Text = "18";
         Seat18.UseVisualStyleBackColor = false;
@@ -521,9 +562,9 @@ partial class MainForm
         // 
         Seat17.BackColor = SystemColors.ActiveBorder;
         Seat17.Dock = DockStyle.Fill;
-        Seat17.Location = new Point(3, 175);
+        Seat17.Location = new Point(3, 131);
         Seat17.Name = "Seat17";
-        Seat17.Size = new Size(56, 37);
+        Seat17.Size = new Size(55, 26);
         Seat17.TabIndex = 20;
         Seat17.Text = "17";
         Seat17.UseVisualStyleBackColor = false;
@@ -532,9 +573,9 @@ partial class MainForm
         // 
         Seat16.BackColor = SystemColors.ActiveBorder;
         Seat16.Dock = DockStyle.Fill;
-        Seat16.Location = new Point(251, 132);
+        Seat16.Location = new Point(247, 99);
         Seat16.Name = "Seat16";
-        Seat16.Size = new Size(57, 37);
+        Seat16.Size = new Size(55, 26);
         Seat16.TabIndex = 19;
         Seat16.Text = "16";
         Seat16.UseVisualStyleBackColor = false;
@@ -543,9 +584,9 @@ partial class MainForm
         // 
         Seat15.BackColor = SystemColors.ActiveBorder;
         Seat15.Dock = DockStyle.Fill;
-        Seat15.Location = new Point(189, 132);
+        Seat15.Location = new Point(186, 99);
         Seat15.Name = "Seat15";
-        Seat15.Size = new Size(56, 37);
+        Seat15.Size = new Size(55, 26);
         Seat15.TabIndex = 18;
         Seat15.Text = "15";
         Seat15.UseVisualStyleBackColor = false;
@@ -554,9 +595,9 @@ partial class MainForm
         // 
         Seat14.BackColor = SystemColors.ActiveBorder;
         Seat14.Dock = DockStyle.Fill;
-        Seat14.Location = new Point(65, 132);
+        Seat14.Location = new Point(64, 99);
         Seat14.Name = "Seat14";
-        Seat14.Size = new Size(56, 37);
+        Seat14.Size = new Size(55, 26);
         Seat14.TabIndex = 16;
         Seat14.Text = "14";
         Seat14.UseVisualStyleBackColor = false;
@@ -565,9 +606,9 @@ partial class MainForm
         // 
         Seat13.BackColor = SystemColors.ActiveBorder;
         Seat13.Dock = DockStyle.Fill;
-        Seat13.Location = new Point(3, 132);
+        Seat13.Location = new Point(3, 99);
         Seat13.Name = "Seat13";
-        Seat13.Size = new Size(56, 37);
+        Seat13.Size = new Size(55, 26);
         Seat13.TabIndex = 15;
         Seat13.Text = "13";
         Seat13.UseVisualStyleBackColor = false;
@@ -576,9 +617,9 @@ partial class MainForm
         // 
         Seat12.BackColor = SystemColors.ActiveBorder;
         Seat12.Dock = DockStyle.Fill;
-        Seat12.Location = new Point(251, 89);
+        Seat12.Location = new Point(247, 67);
         Seat12.Name = "Seat12";
-        Seat12.Size = new Size(57, 37);
+        Seat12.Size = new Size(55, 26);
         Seat12.TabIndex = 14;
         Seat12.Text = "12";
         Seat12.UseVisualStyleBackColor = false;
@@ -587,9 +628,9 @@ partial class MainForm
         // 
         Seat11.BackColor = SystemColors.ActiveBorder;
         Seat11.Dock = DockStyle.Fill;
-        Seat11.Location = new Point(189, 89);
+        Seat11.Location = new Point(186, 67);
         Seat11.Name = "Seat11";
-        Seat11.Size = new Size(56, 37);
+        Seat11.Size = new Size(55, 26);
         Seat11.TabIndex = 13;
         Seat11.Text = "11";
         Seat11.UseVisualStyleBackColor = false;
@@ -598,9 +639,9 @@ partial class MainForm
         // 
         Seat10.BackColor = SystemColors.ActiveBorder;
         Seat10.Dock = DockStyle.Fill;
-        Seat10.Location = new Point(65, 89);
+        Seat10.Location = new Point(64, 67);
         Seat10.Name = "Seat10";
-        Seat10.Size = new Size(56, 37);
+        Seat10.Size = new Size(55, 26);
         Seat10.TabIndex = 11;
         Seat10.Text = "10";
         Seat10.UseVisualStyleBackColor = false;
@@ -609,9 +650,9 @@ partial class MainForm
         // 
         Seat9.BackColor = SystemColors.ActiveBorder;
         Seat9.Dock = DockStyle.Fill;
-        Seat9.Location = new Point(3, 89);
+        Seat9.Location = new Point(3, 67);
         Seat9.Name = "Seat9";
-        Seat9.Size = new Size(56, 37);
+        Seat9.Size = new Size(55, 26);
         Seat9.TabIndex = 10;
         Seat9.Text = "9";
         Seat9.UseVisualStyleBackColor = false;
@@ -620,9 +661,9 @@ partial class MainForm
         // 
         Seat8.BackColor = SystemColors.ActiveBorder;
         Seat8.Dock = DockStyle.Fill;
-        Seat8.Location = new Point(251, 46);
+        Seat8.Location = new Point(247, 35);
         Seat8.Name = "Seat8";
-        Seat8.Size = new Size(57, 37);
+        Seat8.Size = new Size(55, 26);
         Seat8.TabIndex = 9;
         Seat8.Text = "8";
         Seat8.UseVisualStyleBackColor = false;
@@ -631,9 +672,9 @@ partial class MainForm
         // 
         Seat7.BackColor = SystemColors.ActiveBorder;
         Seat7.Dock = DockStyle.Fill;
-        Seat7.Location = new Point(189, 46);
+        Seat7.Location = new Point(186, 35);
         Seat7.Name = "Seat7";
-        Seat7.Size = new Size(56, 37);
+        Seat7.Size = new Size(55, 26);
         Seat7.TabIndex = 8;
         Seat7.Text = "7";
         Seat7.UseVisualStyleBackColor = false;
@@ -642,9 +683,9 @@ partial class MainForm
         // 
         Seat6.BackColor = SystemColors.ActiveBorder;
         Seat6.Dock = DockStyle.Fill;
-        Seat6.Location = new Point(65, 46);
+        Seat6.Location = new Point(64, 35);
         Seat6.Name = "Seat6";
-        Seat6.Size = new Size(56, 37);
+        Seat6.Size = new Size(55, 26);
         Seat6.TabIndex = 6;
         Seat6.Text = "6";
         Seat6.UseVisualStyleBackColor = false;
@@ -653,9 +694,9 @@ partial class MainForm
         // 
         Seat5.BackColor = SystemColors.ActiveBorder;
         Seat5.Dock = DockStyle.Fill;
-        Seat5.Location = new Point(3, 46);
+        Seat5.Location = new Point(3, 35);
         Seat5.Name = "Seat5";
-        Seat5.Size = new Size(56, 37);
+        Seat5.Size = new Size(55, 26);
         Seat5.TabIndex = 5;
         Seat5.Text = "5";
         Seat5.UseVisualStyleBackColor = false;
@@ -664,9 +705,9 @@ partial class MainForm
         // 
         Seat4.BackColor = SystemColors.ActiveBorder;
         Seat4.Dock = DockStyle.Fill;
-        Seat4.Location = new Point(251, 3);
+        Seat4.Location = new Point(247, 3);
         Seat4.Name = "Seat4";
-        Seat4.Size = new Size(57, 37);
+        Seat4.Size = new Size(55, 26);
         Seat4.TabIndex = 4;
         Seat4.Text = "4";
         Seat4.UseVisualStyleBackColor = false;
@@ -675,9 +716,9 @@ partial class MainForm
         // 
         Seat3.BackColor = SystemColors.ActiveBorder;
         Seat3.Dock = DockStyle.Fill;
-        Seat3.Location = new Point(189, 3);
+        Seat3.Location = new Point(186, 3);
         Seat3.Name = "Seat3";
-        Seat3.Size = new Size(56, 37);
+        Seat3.Size = new Size(55, 26);
         Seat3.TabIndex = 3;
         Seat3.Text = "3";
         Seat3.UseVisualStyleBackColor = false;
@@ -686,9 +727,9 @@ partial class MainForm
         // 
         Seat2.BackColor = SystemColors.ActiveBorder;
         Seat2.Dock = DockStyle.Fill;
-        Seat2.Location = new Point(65, 3);
+        Seat2.Location = new Point(64, 3);
         Seat2.Name = "Seat2";
-        Seat2.Size = new Size(56, 37);
+        Seat2.Size = new Size(55, 26);
         Seat2.TabIndex = 1;
         Seat2.Text = "2";
         Seat2.UseVisualStyleBackColor = false;
@@ -699,21 +740,10 @@ partial class MainForm
         Seat1.Dock = DockStyle.Fill;
         Seat1.Location = new Point(3, 3);
         Seat1.Name = "Seat1";
-        Seat1.Size = new Size(56, 37);
+        Seat1.Size = new Size(55, 26);
         Seat1.TabIndex = 0;
         Seat1.Text = "1";
         Seat1.UseVisualStyleBackColor = false;
-        // 
-        // ChangeStateButton
-        // 
-        ChangeStateButton.Dock = DockStyle.Fill;
-        ChangeStateButton.Location = new Point(320, 571);
-        ChangeStateButton.Name = "ChangeStateButton";
-        ChangeStateButton.Size = new Size(947, 58);
-        ChangeStateButton.TabIndex = 13;
-        ChangeStateButton.Text = "Төлөв Өөрчлөх";
-        ChangeStateButton.UseVisualStyleBackColor = true;
-        ChangeStateButton.Click += ChangeStateButton_Click;
         // 
         // MainForm
         // 
@@ -729,6 +759,7 @@ partial class MainForm
         SearchTableLayout.ResumeLayout(false);
         SearchTableLayout.PerformLayout();
         ButtonTable.ResumeLayout(false);
+        FlightTableLayout.ResumeLayout(false);
         tableLayoutPanel1.ResumeLayout(false);
         ResumeLayout(false);
     }
@@ -786,4 +817,6 @@ partial class MainForm
     private Button Seat6;
     private Button Seat5;
     private Button ChangeStateButton;
+    private TableLayoutPanel FlightTableLayout;
+    private FlowLayoutPanel FlightListFlowPanel;
 }

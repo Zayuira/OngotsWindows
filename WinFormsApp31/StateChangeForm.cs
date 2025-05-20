@@ -1,61 +1,99 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Security.Policy;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using Microsoft.AspNetCore.SignalR.Client;
 
-namespace WinFormsApp31;
-
-public partial class StateChangeForm : Form
+namespace WinFormsApp31
 {
-    private readonly string _url = "http://localhost:5000/flightstatushub";
-    private readonly string _hubUrl = "https://localhost:7227/flightstatusdisplay";
-    HubConnection _hubConnection;
-    public StateChangeForm()
+    public partial class StateChangeForm : Form
     {
-        InitializeComponent();
-    }
-    private async Task ConnectToHub()
-    {
-        // Create a new HubConnection
-        _hubConnection = new HubConnectionBuilder()
-        .WithUrl(new Uri(textBox_HubURL.Text ?? _url))
-        .WithAutomaticReconnect()
-        .Build();
+        private readonly string _defaultHubUrl = "http://localhost:5000/flightstatushub";
+        private HubConnection _hubConnection;
 
-        label_ConnectionStatus.Text = "Connecting...";
-        await _hubConnection.StartAsync();
-        label_ConnectionStatus.Text = _hubConnection.State.ToString();
-        _hubConnection.Reconnected += async (connectionId) =>
+        public StateChangeForm()
         {
-            label_ConnectionStatus.Text = "Reconnected to the server";
-        };
+            InitializeComponent();
+        }
 
-        _hubConnection.Reconnecting += async (exception) =>
+        private async Task ConnectToHub()
         {
-            label_ConnectionStatus.Text = "Reconnecting to the server...";
-        };
+            string hubUrl = string.IsNullOrWhiteSpace(textBox_HubURL.Text)
+                ? _defaultHubUrl
+                : textBox_HubURL.Text;
 
-        _hubConnection.Closed += async (exception) =>
+            _hubConnection = new HubConnectionBuilder()
+                .WithUrl(new Uri(hubUrl))
+                .WithAutomaticReconnect()
+                .Build();
+
+            label_ConnectionStatus.Text = "Connecting...";
+            try
+            {
+                await _hubConnection.StartAsync();
+                label_ConnectionStatus.Text = $"Connected ({_hubConnection.State})";
+            }
+            catch (Exception ex)
+            {
+                label_ConnectionStatus.Text = "Connection failed";
+                MessageBox.Show($"Холболт амжилтгүй боллоо: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            _hubConnection.Reconnected += connectionId =>
+            {
+                label_ConnectionStatus.Invoke(() => label_ConnectionStatus.Text = "Reconnected");
+                return Task.CompletedTask;
+            };
+
+            _hubConnection.Reconnecting += exception =>
+            {
+                label_ConnectionStatus.Invoke(() => label_ConnectionStatus.Text = "Reconnecting...");
+                return Task.CompletedTask;
+            };
+
+            _hubConnection.Closed += exception =>
+            {
+                label_ConnectionStatus.Invoke(() => label_ConnectionStatus.Text = "Disconnected");
+                return Task.CompletedTask;
+            };
+        }
+
+        private async void button3_Click(object sender, EventArgs e)
         {
-            label_ConnectionStatus.Text = "Disconnected from the server";
-        };
+            await ConnectToHub();
+        }
 
+        private async void button2_Click(object sender, EventArgs e)
+        {
+            if (_hubConnection == null || _hubConnection.State != HubConnectionState.Connected)
+            {
+                MessageBox.Show("Hub-д холбогдоогүй байна!", "Анхааруулга", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
 
-    }
-    private async void button3_Click(object sender, EventArgs e)
-    {
-        await ConnectToHub();
-    }
+            string flightNumber = textBox_FlightNumber.Text;
+            string status = comboBox_Status.SelectedItem?.ToString() ?? "Тодорхойгүй";
 
-    private void button2_Click(object sender, EventArgs e)
-    {
-        _hubConnection.InvokeAsync("SendFlightStatus", textBox_FlightNumber.Text, textBox_Status.Text);
+            try
+            {
+                await _hubConnection.InvokeAsync("SendFlightStatus", flightNumber, status);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Мэдээлэл илгээхэд алдаа гарлаа: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void StateChangeForm_Load(object sender, EventArgs e)
+        {
+            comboBox_Status.Items.Clear();
+            comboBox_Status.Items.Add("Бүртгэж байна");
+            comboBox_Status.Items.Add("Онгоцонд сууж байна");
+            comboBox_Status.Items.Add("Ниссэн");
+            comboBox_Status.Items.Add("Хойшилсон");
+            comboBox_Status.Items.Add("Цуцалсан");
+            comboBox_Status.SelectedIndex = 0;
+
+            textBox_HubURL.Text = _defaultHubUrl;
+        }
     }
 }
