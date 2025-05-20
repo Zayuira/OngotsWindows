@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CalculatorLibrary\CalculatorLibrary.csproj" />
+    <ProjectReference Include="..\FlightLibrary\FlightLibrary.csproj" />
   </ItemGroup>
 
   <ItemGroup>

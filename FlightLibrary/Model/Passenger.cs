@@ -25,5 +25,8 @@ namespace FlightLibrary
             Seat = seat;
             Flight = flight;
         }
+        public Passenger()
+        {
+        }
     }
 }

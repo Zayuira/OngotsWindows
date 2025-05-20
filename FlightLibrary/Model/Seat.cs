@@ -21,5 +21,8 @@ namespace FlightLibrary
             FlightId = flightId;
             Flight = flight;
         }
+        public Seat()
+        {
+        }
     }
 }
