@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.13.35931.197 d17.13
+VisualStudioVersion = 17.13.35931.197
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorApp15", "BlazorFlightStatus\BlazorApp15.csproj", "{D17CDA33-B721-4D97-AF6D-A2502D12322D}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinFormsApp31", "WinFormsAp
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlightStatusHub", "FlightStatusHub\FlightStatusHub.csproj", "{5DBF0C8A-70BD-484E-8D9E-5C329E925C6F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlightLibrary", "FlightLibrary\FlightLibrary.csproj", "{8E6A0A43-16B7-4432-8DAB-EA9E82F1D8C7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -40,6 +42,10 @@ Global
 		{5DBF0C8A-70BD-484E-8D9E-5C329E925C6F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5DBF0C8A-70BD-484E-8D9E-5C329E925C6F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5DBF0C8A-70BD-484E-8D9E-5C329E925C6F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8E6A0A43-16B7-4432-8DAB-EA9E82F1D8C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8E6A0A43-16B7-4432-8DAB-EA9E82F1D8C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8E6A0A43-16B7-4432-8DAB-EA9E82F1D8C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8E6A0A43-16B7-4432-8DAB-EA9E82F1D8C7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -29,14 +29,6 @@ partial class MainForm
     private void InitializeComponent()
     {
         blazorWebView1 = new Microsoft.AspNetCore.Components.WebView.WindowsForms.BlazorWebView();
-        button2 = new Button();
-        textBox_Status = new TextBox();
-        textBox_FlightNumber = new TextBox();
-        label_ConnectionStatus = new Label();
-        textBox_HubURL = new TextBox();
-        label2 = new Label();
-        groupBox1 = new GroupBox();
-        button3 = new Button();
         MainTableLayout = new TableLayoutPanel();
         SearchTableLayout = new TableLayoutPanel();
         SearchTextBox = new TextBox();
@@ -86,7 +78,7 @@ partial class MainForm
         Seat3 = new Button();
         Seat2 = new Button();
         Seat1 = new Button();
-        groupBox1.SuspendLayout();
+        ChangeStateButton = new Button();
         MainTableLayout.SuspendLayout();
         SearchTableLayout.SuspendLayout();
         ButtonTable.SuspendLayout();
@@ -103,94 +95,6 @@ partial class MainForm
         blazorWebView1.TabIndex = 0;
         blazorWebView1.Text = "blazorWebView1";
         // 
-        // button2
-        // 
-        button2.Location = new Point(54, 297);
-        button2.Margin = new Padding(2);
-        button2.Name = "button2";
-        button2.Size = new Size(122, 58);
-        button2.TabIndex = 3;
-        button2.Text = "Change status";
-        button2.UseVisualStyleBackColor = true;
-        button2.Click += button2_Click;
-        // 
-        // textBox_Status
-        // 
-        textBox_Status.Location = new Point(56, 251);
-        textBox_Status.Margin = new Padding(2);
-        textBox_Status.Name = "textBox_Status";
-        textBox_Status.PlaceholderText = "Status";
-        textBox_Status.Size = new Size(289, 27);
-        textBox_Status.TabIndex = 4;
-        // 
-        // textBox_FlightNumber
-        // 
-        textBox_FlightNumber.Location = new Point(56, 207);
-        textBox_FlightNumber.Margin = new Padding(2);
-        textBox_FlightNumber.Name = "textBox_FlightNumber";
-        textBox_FlightNumber.PlaceholderText = "Flight number";
-        textBox_FlightNumber.Size = new Size(289, 27);
-        textBox_FlightNumber.TabIndex = 5;
-        // 
-        // label_ConnectionStatus
-        // 
-        label_ConnectionStatus.AutoSize = true;
-        label_ConnectionStatus.Location = new Point(56, 151);
-        label_ConnectionStatus.Margin = new Padding(2, 0, 2, 0);
-        label_ConnectionStatus.Name = "label_ConnectionStatus";
-        label_ConnectionStatus.Size = new Size(107, 20);
-        label_ConnectionStatus.TabIndex = 6;
-        label_ConnectionStatus.Text = "Not connected";
-        // 
-        // textBox_HubURL
-        // 
-        textBox_HubURL.Location = new Point(54, 106);
-        textBox_HubURL.Margin = new Padding(2);
-        textBox_HubURL.Name = "textBox_HubURL";
-        textBox_HubURL.Size = new Size(291, 27);
-        textBox_HubURL.TabIndex = 7;
-        textBox_HubURL.Text = "http://localhost:5000/flightstatushub";
-        // 
-        // label2
-        // 
-        label2.AutoSize = true;
-        label2.Location = new Point(53, 84);
-        label2.Margin = new Padding(2, 0, 2, 0);
-        label2.Name = "label2";
-        label2.Size = new Size(118, 20);
-        label2.TabIndex = 8;
-        label2.Text = "SignalR hub URL";
-        // 
-        // groupBox1
-        // 
-        groupBox1.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-        groupBox1.Controls.Add(button3);
-        groupBox1.Controls.Add(label2);
-        groupBox1.Controls.Add(button2);
-        groupBox1.Controls.Add(textBox_HubURL);
-        groupBox1.Controls.Add(textBox_Status);
-        groupBox1.Controls.Add(label_ConnectionStatus);
-        groupBox1.Controls.Add(textBox_FlightNumber);
-        groupBox1.Location = new Point(931, 2);
-        groupBox1.Margin = new Padding(2);
-        groupBox1.Name = "groupBox1";
-        groupBox1.Padding = new Padding(2);
-        groupBox1.Size = new Size(337, 59);
-        groupBox1.TabIndex = 9;
-        groupBox1.TabStop = false;
-        groupBox1.Text = "Flight status";
-        // 
-        // button3
-        // 
-        button3.Location = new Point(174, 144);
-        button3.Margin = new Padding(2);
-        button3.Name = "button3";
-        button3.Size = new Size(170, 27);
-        button3.TabIndex = 9;
-        button3.Text = "Connect";
-        button3.UseVisualStyleBackColor = true;
-        button3.Click += button3_Click;
-        // 
         // MainTableLayout
         // 
         MainTableLayout.BackColor = SystemColors.ActiveCaption;
@@ -198,10 +102,10 @@ partial class MainForm
         MainTableLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
         MainTableLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 75F));
         MainTableLayout.Controls.Add(blazorWebView1, 1, 1);
-        MainTableLayout.Controls.Add(groupBox1, 1, 0);
         MainTableLayout.Controls.Add(SearchTableLayout, 0, 0);
         MainTableLayout.Controls.Add(ButtonTable, 0, 2);
         MainTableLayout.Controls.Add(tableLayoutPanel1, 0, 1);
+        MainTableLayout.Controls.Add(ChangeStateButton, 1, 2);
         MainTableLayout.Dock = DockStyle.Fill;
         MainTableLayout.Location = new Point(0, 0);
         MainTableLayout.Name = "MainTableLayout";
@@ -800,6 +704,17 @@ partial class MainForm
         Seat1.Text = "1";
         Seat1.UseVisualStyleBackColor = false;
         // 
+        // ChangeStateButton
+        // 
+        ChangeStateButton.Dock = DockStyle.Fill;
+        ChangeStateButton.Location = new Point(320, 571);
+        ChangeStateButton.Name = "ChangeStateButton";
+        ChangeStateButton.Size = new Size(947, 58);
+        ChangeStateButton.TabIndex = 13;
+        ChangeStateButton.Text = "Төлөв Өөрчлөх";
+        ChangeStateButton.UseVisualStyleBackColor = true;
+        ChangeStateButton.Click += ChangeStateButton_Click;
+        // 
         // MainForm
         // 
         AutoScaleDimensions = new SizeF(8F, 20F);
@@ -810,8 +725,6 @@ partial class MainForm
         Name = "MainForm";
         Text = "Form1";
         Load += Form1_Load;
-        groupBox1.ResumeLayout(false);
-        groupBox1.PerformLayout();
         MainTableLayout.ResumeLayout(false);
         SearchTableLayout.ResumeLayout(false);
         SearchTableLayout.PerformLayout();
@@ -823,14 +736,6 @@ partial class MainForm
     #endregion
 
     private Microsoft.AspNetCore.Components.WebView.WindowsForms.BlazorWebView blazorWebView1;
-    private Button button2;
-    private TextBox textBox_Status;
-    private TextBox textBox_FlightNumber;
-    private Label label_ConnectionStatus;
-    private TextBox textBox_HubURL;
-    private Label label2;
-    private GroupBox groupBox1;
-    private Button button3;
     private TableLayoutPanel MainTableLayout;
     private TableLayoutPanel SearchTableLayout;
     private TextBox SearchTextBox;
@@ -880,4 +785,5 @@ partial class MainForm
     private Button Seat7;
     private Button Seat6;
     private Button Seat5;
+    private Button ChangeStateButton;
 }
