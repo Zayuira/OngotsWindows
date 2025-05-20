@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using FlightLibrary.DTO;
 
-namespace WinFormsApp31.Services
+namespace FlightAPI.Services
 {
     public interface IFlightService
     {

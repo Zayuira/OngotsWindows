@@ -4,7 +4,8 @@ using FlightLibrary.DTO;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Runtime.InteropServices;
-
+using Microsoft.EntityFrameworkCore;
+using FlightAPI;
 [ApiController]
 [Route("api/[controller]")]
 public class PassengerController : ControllerBase
@@ -40,10 +41,18 @@ public class PassengerController : ControllerBase
         if (passenger == null || seat == null || seat.IsAssigned)
             return BadRequest("Invalid or already assigned seat");
 
-        passenger.SeatId = dto.SeatCode;
-        seat.IsAssigned = true;
+        // Fix: Convert SeatCode (string) to SeatId (int?) using appropriate parsing
+        if (int.TryParse(dto.SeatCode, out int seatId))
+        {
+            passenger.SeatId = seatId;
+            seat.IsAssigned = true;
 
-        _context.SaveChanges();
-        return Ok();
+            _context.SaveChanges();
+            return Ok();
+        }
+        else
+        {
+            return BadRequest("Invalid SeatCode format");
+        }
     }
 }
