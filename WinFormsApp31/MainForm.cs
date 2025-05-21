@@ -253,12 +253,100 @@ public partial class MainForm : Form
         flightPanel.Click += (s, e) =>
         {
             tableLayoutPanel1.Visible = true;
+            ShowFlightSeats(dto);
             // TODO: Flight дэлгэрэнгүй мэдээлэл гаргах хэсгийг хэрэгжүүлэх
         };
 
         FlightListFlowPanel.Controls.Add(flightPanel);
     }
+    //private void ShowFlightSeats(FlightDtos flight)
+    //{
+    //    // 1. TableLayoutPanel дээрх бүх button-уудыг шалгана
+    //    foreach (Control control in tableLayoutPanel1.Controls)
+    //    {
+    //        if (control is Button seatButton)
+    //        {
+    //            // Суудлын дугаар нь button-ийн Text гэж үзье (жишээ нь "1A", "2B" ...)
+    //            string seatNumber = seatButton.Text;
 
+    //            // тухайн суудлыг flight.Seats-аас хайна
+    //            var seat = flight.Seats.FirstOrDefault(s => s.SeatNumber == seatNumber);
+    //            MessageBox.Show($"Button: {seatNumber}, DB Seat: {seat?.SeatNumber}, Assigned: {seat?.IsAssigned}");
+    //            if (seat != null && seat.IsAssigned)
+    //            {
+    //                // Хэрвээ энэ суудал захиалагдсан бол
+    //                seatButton.Enabled = false;
+    //                seatButton.BackColor = Color.LightGray; // эсвэл өөр өнгө
+    //            }
+    //            else
+    //            {
+    //                // Захиалагдаагүй бол идэвхтэй, анхны өнгөөр
+    //                seatButton.Enabled = true;
+    //                seatButton.BackColor = SystemColors.Control;
+    //            }
+    //        }
+    //    }
+    //}
+    //private void ShowFlightSeats(FlightDtos flight)
+    //{
+    //    foreach (Control control in tableLayoutPanel1.Controls)
+    //    {
+    //        if (control is Button seatButton)
+    //        {
+    //            string seatNumber = seatButton.Text.Trim();
+
+    //            var seat = flight.Seats.FirstOrDefault(s =>
+    //                s.SeatNumber.Trim().Equals(seatNumber, StringComparison.OrdinalIgnoreCase));
+    //            MessageBox.Show($"Button: {seatNumber}, DB Seat: {seat?.SeatNumber}, Assigned: {seat?.IsAssigned}");
+    //            if (seat != null && seat.IsAssigned)
+    //            {
+    //                seatButton.Enabled = false;
+    //                seatButton.BackColor = Color.LightGray;
+    //            }
+    //            else
+    //            {
+    //                seatButton.Enabled = true;
+    //                seatButton.BackColor = SystemColors.Control;
+    //            }
+    //        }
+    //    }
+    //}
+
+    private void ShowFlightSeats(FlightDtos flight)
+    {
+
+        foreach (Control control in tableLayoutPanel1.Controls)
+        {
+            if (control is Button seatButton)
+            {
+                string seatNumber = seatButton.Text.Trim().ToUpperInvariant();
+
+                var seat = flight.Seats.FirstOrDefault(s =>
+                    s.Id.ToString() == seatNumber);
+
+                if (seat == null)
+                {
+                    seatButton.Enabled = true;
+                    seatButton.BackColor = SystemColors.Control;
+                    Console.WriteLine($"[WARN] Seat not found for button: [{seatButton.Text}]");
+                    continue;
+                }
+
+                Console.WriteLine($"[MATCH] Button: [{seatButton.Text}] ↔ DB Seat: [{seat.SeatNumber}] Assigned: {seat.IsAssigned}");
+
+                if (seat.IsAssigned)
+                {
+                    seatButton.Enabled = false;
+                    seatButton.BackColor = Color.LightGray;
+                }
+                else
+                {
+                    seatButton.Enabled = true;
+                    seatButton.BackColor = SystemColors.Control;
+                }
+            }
+        }
+    }
     // Нислэг захиалаагүй гэсэн panel зурна
     private void DrawNoFlightPanel()
     {

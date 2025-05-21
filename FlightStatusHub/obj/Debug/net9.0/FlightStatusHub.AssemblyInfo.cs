@@ -15,7 +15,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("FlightStatusHub")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ee7229a5529300e9589d320363b4d520a5365f79")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b8652b5f7d7a66d4335d7de4d550c12499105510")]
 [assembly: System.Reflection.AssemblyProductAttribute("FlightStatusHub")]
 [assembly: System.Reflection.AssemblyTitleAttribute("FlightStatusHub")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
