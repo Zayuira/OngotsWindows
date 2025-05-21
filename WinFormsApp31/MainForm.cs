@@ -52,69 +52,7 @@ public partial class MainForm : Form
             }
         }
     }
-    //private void AddFlightListFlowPanel()
-    //{
-    //    FlightListFlowPanel.Controls.Clear();
-
-    //    foreach (var flight in flights)
-    //    {
-    //        var dto = new FlightDtos
-    //        {
-    //            Id = flight.Id,
-    //            Number = flight.Number,
-    //            Status = flight.Status.ToString(),
-    //            TotalSeats = flight.Seats.Count,
-    //            AssignedSeats = flight.Seats.Count(s => s.IsAssigned)
-    //        };
-
-    //        var flightPanel = new Panel
-    //        {
-    //            Width = FlightListFlowPanel.ClientSize.Width - 10,
-    //            Height = 90,
-    //            BorderStyle = BorderStyle.FixedSingle,
-    //            BackColor = Color.White,
-    //            Margin = new Padding(5),
-    //            Cursor = Cursors.Hand
-    //        };
-
-    //        var lblNumber = new Label
-    //        {
-    //            Text = $"Нислэг: {dto.Number}",
-    //            Font = new Font("Segoe UI", 10, FontStyle.Bold),
-    //            Location = new Point(10, 10),
-    //            AutoSize = true
-    //        };
-
-    //        var lblStatus = new Label
-    //        {
-    //            Text = $"Төлөв: {dto.Status}",
-    //            Font = new Font("Segoe UI", 9),
-    //            Location = new Point(10, 30),
-    //            AutoSize = true,
-    //            ForeColor = Color.DarkGreen
-    //        };
-
-    //        var lblSeats = new Label
-    //        {
-    //            Text = $"Суудал: {dto.AssignedSeats}/{dto.TotalSeats} (Сул: {dto.AvailableSeats})",
-    //            Font = new Font("Segoe UI", 9),
-    //            Location = new Point(10, 50),
-    //            AutoSize = true
-    //        };
-
-    //        flightPanel.Controls.Add(lblNumber);
-    //        flightPanel.Controls.Add(lblStatus);
-    //        flightPanel.Controls.Add(lblSeats);
-
-    //        flightPanel.Click += (s, e) =>
-    //        {
-    //            tableLayoutPanel1.Visible = true;
-    //            // TODO: Flight дэлгэрэнгүй мэдээлэл гаргах хэсгийг хэрэгжүүлэх
-    //        };
-
-    //        FlightListFlowPanel.Controls.Add(flightPanel);
-    //    }
-    //}
+ 
 
     private void AddFlightListFlowPanel()
     {
@@ -151,7 +89,7 @@ public partial class MainForm : Form
 
             var lblSeats = new Label
             {
-                Text = $"Суудал: {dto.AssignedSeats}/{dto.TotalSeats} (Сул: {dto.AvailableSeats})",
+                Text = $"Баталгаажсан Суудлууд: {dto.AssignedSeats}/{dto.TotalSeats} (Сул: {dto.AvailableSeats})",
                 Font = new Font("Segoe UI", 9),
                 Location = new Point(10, 50),
                 AutoSize = true
@@ -196,66 +134,22 @@ public partial class MainForm : Form
             stateChangeForm.ShowDialog();
         }
     }
-    //BOLGONODOOOOOOOOOOOOOOOO
-    //private void SearchButton_Click(object sender, EventArgs e)
-    //{
-    //    try
-    //    {
-    //        // Clear previous search results
-    //        ResultPassengerFlowPanel.Controls.Clear();
 
-    //        string searchPassport = SearchTextBox.Text?.Trim();
-
-    //        if (string.IsNullOrEmpty(searchPassport))
-    //        {
-    //            MessageBox.Show("Паспортын дугаараа оруулна уу.");
-    //            return;
-    //        }
-
-    //        PassengerDto foundPassenger = null;
-
-    //        foreach (var flight in flightDtos)
-    //        {
-    //            MessageBox.Show($"NIIT PASSENGER{flight.PassengersCount}");
-    //            foundPassenger = flight.Passengers?.FirstOrDefault(p =>
-    //                !string.IsNullOrEmpty(p.PassportNumber) &&
-    //                p.PassportNumber.Equals(searchPassport, StringComparison.OrdinalIgnoreCase));
-
-    //            if (foundPassenger != null)
-    //            {
-    //                Console.WriteLine($"[DEBUG] Flight: {flight.Number}, Passenger: {foundPassenger.Name}, Passport: {foundPassenger.PassportNumber}");
-    //                break;
-    //            }
-    //        }
-
-    //        if (foundPassenger != null)
-    //        {
-    //            CreatePassengerInfo(foundPassenger);
-    //        }
-    //        else
-    //        {
-    //            CreateNotFoundPanel();
-    //        }
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        Console.WriteLine("[ERROR] " + ex.Message);
-    //        MessageBox.Show("Хайлт хийх явцад алдаа гарлаа. Алдааны мэдээлэл: " + ex.Message,
-    //                        "Алдаа", MessageBoxButtons.OK, MessageBoxIcon.Error);
-    //    }
-    //}
+    
     private void SearchButton_Click(object sender, EventArgs e)
     {
         try
         {
             // Clear previous search results
             ResultPassengerFlowPanel.Controls.Clear();
+            FlightListFlowPanel.Controls.Clear(); // Нэмэлт: flight list panel-ийг бас цэвэрлэнэ
 
             string searchPassport = SearchTextBox.Text?.Trim();
 
             if (string.IsNullOrEmpty(searchPassport))
             {
                 MessageBox.Show("Паспортын дугаараа оруулна уу.");
+                AddFlightListFlowPanel();
                 return;
             }
 
@@ -269,11 +163,31 @@ public partial class MainForm : Form
 
             if (foundPassenger != null)
             {
+                // Зорчигч аль нислэгт багтаж байгааг олж авна
+                var passengerFlight = flightDtos.FirstOrDefault(f =>
+                    f.Passengers.Any(p =>
+                        !string.IsNullOrEmpty(p.PassportNumber) &&
+                        p.PassportNumber.Equals(searchPassport, StringComparison.OrdinalIgnoreCase)));
+
+                if (passengerFlight != null)
+                {
+                    // Зөвхөн тэр нислэгийг FlightListFlowPanel-д зурна
+                    DrawSingleFlightOnPanel(passengerFlight);
+                }
+                else
+                {
+                    // Хэрвээ зорчигч олдсон ч нислэгт холбогдоогүй бол
+                    DrawNoFlightPanel();
+                }
+
+                // Мэдээлэл panel-д зорчигчийн мэдээллийг зурна
                 CreatePassengerInfo(foundPassenger);
             }
             else
             {
+                // Зорчигч олдоогүй бол
                 CreateNotFoundPanel();
+                DrawNoFlightPanel();
             }
         }
         catch (Exception ex)
@@ -283,6 +197,94 @@ public partial class MainForm : Form
         }
     }
 
+    // Зөвхөн нэг нислэгийг FlightListFlowPanel-д зурна
+    private void DrawSingleFlightOnPanel(FlightDtos dto)
+    {
+        FlightListFlowPanel.Controls.Clear();
+
+        var flightPanel = new Panel
+        {
+            Width = FlightListFlowPanel.ClientSize.Width - 10,
+            Height = 110,
+            BorderStyle = BorderStyle.FixedSingle,
+            BackColor = Color.White,
+            Margin = new Padding(5),
+            Cursor = Cursors.Hand
+        };
+
+        var lblNumber = new Label
+        {
+            Text = $"Нислэг: {dto.Number}",
+            Font = new Font("Segoe UI", 10, FontStyle.Bold),
+            Location = new Point(10, 10),
+            AutoSize = true
+        };
+
+        var lblStatus = new Label
+        {
+            Text = $"Төлөв: {dto.Status}",
+            Font = new Font("Segoe UI", 9),
+            Location = new Point(10, 30),
+            AutoSize = true,
+            ForeColor = Color.DarkGreen
+        };
+
+        var lblSeats = new Label
+        {
+            Text = $"Баталгаажсан Суудлууд: {dto.AssignedSeats}/{dto.TotalSeats} (Сул: {dto.AvailableSeats})",
+            Font = new Font("Segoe UI", 9),
+            Location = new Point(10, 50),
+            AutoSize = true
+        };
+
+        var lblPassengers = new Label
+        {
+            Text = $"Захиалсан зорчигчид: {dto.PassengersCount} хүн",
+            Font = new Font("Segoe UI", 9),
+            Location = new Point(10, 70),
+            AutoSize = true
+        };
+
+        flightPanel.Controls.Add(lblNumber);
+        flightPanel.Controls.Add(lblStatus);
+        flightPanel.Controls.Add(lblSeats);
+        flightPanel.Controls.Add(lblPassengers);
+
+        flightPanel.Click += (s, e) =>
+        {
+            tableLayoutPanel1.Visible = true;
+            // TODO: Flight дэлгэрэнгүй мэдээлэл гаргах хэсгийг хэрэгжүүлэх
+        };
+
+        FlightListFlowPanel.Controls.Add(flightPanel);
+    }
+
+    // Нислэг захиалаагүй гэсэн panel зурна
+    private void DrawNoFlightPanel()
+    {
+        FlightListFlowPanel.Controls.Clear();
+
+        var noFlightPanel = new Panel
+        {
+            Width = 350,
+            Height = 60,
+            BorderStyle = BorderStyle.FixedSingle,
+            BackColor = Color.LightYellow,
+            Margin = new Padding(5)
+        };
+
+        var lblNoFlight = new Label
+        {
+            Text = "Энэ зорчигч нислэг захиалаагүй байна.",
+            Font = new Font("Segoe UI", 10, FontStyle.Bold),
+            ForeColor = Color.Red,
+            Location = new Point(10, 10),
+            AutoSize = true
+        };
+
+        noFlightPanel.Controls.Add(lblNoFlight);
+        FlightListFlowPanel.Controls.Add(noFlightPanel);
+    }
     private void CreatePassengerInfo(PassengerDto passenger)
     {
         var passengerInfoPanel = new Panel
@@ -313,7 +315,7 @@ public partial class MainForm : Form
         passengerInfoPanel.Controls.Add(lblPassportNumber);
         ResultPassengerFlowPanel.Controls.Add(passengerInfoPanel);
     }
-
+    
     private void CreateNotFoundPanel()
     {
         var notFoundPanel = new Panel
@@ -332,7 +334,7 @@ public partial class MainForm : Form
             Location = new Point(10, 10),
             AutoSize = true
         };
-
+        
         notFoundPanel.Controls.Add(lblNotFound);
         ResultPassengerFlowPanel.Controls.Add(notFoundPanel);
     }
