@@ -21,12 +21,7 @@ public class FlightService : IFlightService
             Status = f.Status.ToString(),
             TotalSeats = f.Seats.Count,
             AssignedSeats = f.Seats.Count(s => (s.IsAssigned == 1)),
-            //Seats = f.Seats.Select(s => new SeatDtos
-            //{
-            //    Id = s.Id,
-            //    SeatNumber = s.Code,
-            //    IsAssigned = s.IsAssigned
-            //}).ToList(),
+            
             Seats = f.Seats.Select(s => new SeatDtos
             {
                 Id = s.Id,

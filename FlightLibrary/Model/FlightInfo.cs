@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FlightLibrary.Model
 {
-    public class FlightStatus
+    public class FlightInfo
     {
         public string FlightNumber { get; set; } = "";
         public string Status { get; set; } = "";

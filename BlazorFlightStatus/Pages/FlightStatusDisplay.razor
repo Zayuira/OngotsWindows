@@ -109,9 +109,9 @@ else
 @code {
     private HubConnection? hubConnection;
 
-    private List<FlightStatus> flights = new()
+    private List<FlightInfo> flights = new()
     {
-        new FlightStatus
+        new FlightInfo
         {
             FlightNumber = "AA123",
             Status = "On Time",
@@ -120,7 +120,7 @@ else
             DepartureTime = DateTime.Now.AddHours(1),
             ArrivalTime = DateTime.Now.AddHours(6)
         },
-        new FlightStatus
+        new FlightInfo
         {
             FlightNumber = "DL456",
             Status = "Delayed",
@@ -129,7 +129,16 @@ else
             DepartureTime = DateTime.Now.AddMinutes(30),
             ArrivalTime = DateTime.Now.AddHours(2)
         },
-        new FlightStatus
+		new FlightInfo
+		{
+			FlightNumber = "SW789",
+			Status = "Cancelled",
+			Origin = "BOS",
+			Destination = "MIA",
+			DepartureTime = DateTime.Now.AddHours(2),
+			ArrivalTime = DateTime.Now.AddHours(5)
+		},
+        new FlightInfo
         {
             FlightNumber = "UA789",
             Status = "Boarding",

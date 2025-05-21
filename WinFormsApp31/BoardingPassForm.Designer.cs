@@ -28,97 +28,102 @@
         /// </summary>
         private void InitializeComponent()
         {
-            PassportNumber = new Label();
-            passport = new Label();
-            SeatNUmber = new Label();
-            suudal = new Label();
-            flightNumber = new Label();
-            flight = new Label();
-            label1 = new Label();
-            name = new Label();
+            Passport = new Label();
+            PassportNumberLabel = new Label();
+            SeatLabel = new Label();
+            NameLabel = new Label();
+            Flight = new Label();
+            FligthNumberLabel = new Label();
+            Name = new Label();
+            SeatNumberLabel = new Label();
             label2 = new Label();
             UserOrderPrintButton = new Button();
+            TimeLabel = new Label();
             SuspendLayout();
             // 
-            // PassportNumber
+            // Passport
             // 
-            PassportNumber.AutoSize = true;
-            PassportNumber.Font = new Font("Segoe UI", 12F);
-            PassportNumber.Location = new Point(12, 54);
-            PassportNumber.Name = "PassportNumber";
-            PassportNumber.Size = new Size(110, 28);
-            PassportNumber.TabIndex = 0;
-            PassportNumber.Text = "Passport ID";
+            Passport.AutoSize = true;
+            Passport.Font = new Font("Segoe UI", 12F);
+            Passport.Location = new Point(21, 131);
+            Passport.Name = "Passport";
+            Passport.Size = new Size(162, 28);
+            Passport.TabIndex = 0;
+            Passport.Text = "PassportNumber:";
             // 
-            // passport
+            // PassportNumberLabel
             // 
-            passport.AutoSize = true;
-            passport.Font = new Font("Segoe UI", 12F);
-            passport.Location = new Point(12, 94);
-            passport.Name = "passport";
-            passport.Size = new Size(120, 28);
-            passport.TabIndex = 1;
-            passport.Text = "XXXXXXXXX";
+            PassportNumberLabel.AutoSize = true;
+            PassportNumberLabel.Font = new Font("Segoe UI", 12F);
+            PassportNumberLabel.ForeColor = SystemColors.HotTrack;
+            PassportNumberLabel.Location = new Point(234, 131);
+            PassportNumberLabel.Name = "PassportNumberLabel";
+            PassportNumberLabel.Size = new Size(120, 28);
+            PassportNumberLabel.TabIndex = 1;
+            PassportNumberLabel.Text = "XXXXXXXXX";
             // 
-            // SeatNUmber
+            // SeatLabel
             // 
-            SeatNUmber.AutoSize = true;
-            SeatNUmber.Font = new Font("Segoe UI", 12F);
-            SeatNUmber.Location = new Point(12, 139);
-            SeatNUmber.Name = "SeatNUmber";
-            SeatNUmber.Size = new Size(127, 28);
-            SeatNUmber.TabIndex = 2;
-            SeatNUmber.Text = "Seat Number";
+            SeatLabel.AutoSize = true;
+            SeatLabel.Font = new Font("Segoe UI", 12F);
+            SeatLabel.Location = new Point(21, 250);
+            SeatLabel.Name = "SeatLabel";
+            SeatLabel.Size = new Size(131, 28);
+            SeatLabel.TabIndex = 2;
+            SeatLabel.Text = "Seat Number:";
             // 
-            // suudal
+            // NameLabel
             // 
-            suudal.AutoSize = true;
-            suudal.Font = new Font("Segoe UI", 12F);
-            suudal.Location = new Point(12, 185);
-            suudal.Name = "suudal";
-            suudal.Size = new Size(120, 28);
-            suudal.TabIndex = 3;
-            suudal.Text = "XXXXXXXXX";
+            NameLabel.AutoSize = true;
+            NameLabel.Font = new Font("Segoe UI", 12F);
+            NameLabel.ForeColor = SystemColors.HotTrack;
+            NameLabel.Location = new Point(234, 78);
+            NameLabel.Name = "NameLabel";
+            NameLabel.Size = new Size(120, 28);
+            NameLabel.TabIndex = 3;
+            NameLabel.Text = "XXXXXXXXX";
             // 
-            // flightNumber
+            // Flight
             // 
-            flightNumber.AutoSize = true;
-            flightNumber.Font = new Font("Segoe UI", 12F);
-            flightNumber.Location = new Point(12, 237);
-            flightNumber.Name = "flightNumber";
-            flightNumber.Size = new Size(139, 28);
-            flightNumber.TabIndex = 4;
-            flightNumber.Text = "Flight Number";
+            Flight.AutoSize = true;
+            Flight.Font = new Font("Segoe UI", 12F);
+            Flight.Location = new Point(21, 183);
+            Flight.Name = "Flight";
+            Flight.Size = new Size(143, 28);
+            Flight.TabIndex = 4;
+            Flight.Text = "Flight Number:";
             // 
-            // flight
+            // FligthNumberLabel
             // 
-            flight.AutoSize = true;
-            flight.Font = new Font("Segoe UI", 12F);
-            flight.Location = new Point(12, 285);
-            flight.Name = "flight";
-            flight.Size = new Size(120, 28);
-            flight.TabIndex = 5;
-            flight.Text = "XXXXXXXXX";
+            FligthNumberLabel.AutoSize = true;
+            FligthNumberLabel.Font = new Font("Segoe UI", 12F);
+            FligthNumberLabel.ForeColor = SystemColors.HotTrack;
+            FligthNumberLabel.Location = new Point(234, 183);
+            FligthNumberLabel.Name = "FligthNumberLabel";
+            FligthNumberLabel.Size = new Size(120, 28);
+            FligthNumberLabel.TabIndex = 5;
+            FligthNumberLabel.Text = "XXXXXXXXX";
             // 
-            // label1
+            // Name
             // 
-            label1.AutoSize = true;
-            label1.Font = new Font("Segoe UI", 12F);
-            label1.Location = new Point(12, 334);
-            label1.Name = "label1";
-            label1.Size = new Size(64, 28);
-            label1.TabIndex = 6;
-            label1.Text = "Name";
+            Name.AutoSize = true;
+            Name.Font = new Font("Segoe UI", 12F);
+            Name.Location = new Point(21, 78);
+            Name.Name = "Name";
+            Name.Size = new Size(68, 28);
+            Name.TabIndex = 6;
+            Name.Text = "Name:";
             // 
-            // name
+            // SeatNumberLabel
             // 
-            name.AutoSize = true;
-            name.Font = new Font("Segoe UI", 12F);
-            name.Location = new Point(12, 380);
-            name.Name = "name";
-            name.Size = new Size(120, 28);
-            name.TabIndex = 7;
-            name.Text = "XXXXXXXXX";
+            SeatNumberLabel.AutoSize = true;
+            SeatNumberLabel.Font = new Font("Segoe UI", 12F);
+            SeatNumberLabel.ForeColor = SystemColors.HotTrack;
+            SeatNumberLabel.Location = new Point(234, 250);
+            SeatNumberLabel.Name = "SeatNumberLabel";
+            SeatNumberLabel.Size = new Size(120, 28);
+            SeatNumberLabel.TabIndex = 7;
+            SeatNumberLabel.Text = "XXXXXXXXX";
             // 
             // label2
             // 
@@ -132,29 +137,41 @@
             // 
             // UserOrderPrintButton
             // 
-            UserOrderPrintButton.Location = new Point(12, 453);
+            UserOrderPrintButton.Location = new Point(122, 351);
             UserOrderPrintButton.Name = "UserOrderPrintButton";
             UserOrderPrintButton.Size = new Size(130, 46);
             UserOrderPrintButton.TabIndex = 9;
             UserOrderPrintButton.Text = "Хэвлэх";
             UserOrderPrintButton.UseVisualStyleBackColor = true;
+            UserOrderPrintButton.Click += UserOrderPrintButton_Click;
+            // 
+            // TimeLabel
+            // 
+            TimeLabel.AutoSize = true;
+            TimeLabel.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            TimeLabel.Location = new Point(322, 9);
+            TimeLabel.Name = "TimeLabel";
+            TimeLabel.Size = new Size(136, 28);
+            TimeLabel.TabIndex = 10;
+            TimeLabel.Text = "YYYY/MM/DD";
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(517, 663);
+            Controls.Add(TimeLabel);
             Controls.Add(UserOrderPrintButton);
             Controls.Add(label2);
-            Controls.Add(name);
-            Controls.Add(label1);
-            Controls.Add(flight);
-            Controls.Add(flightNumber);
-            Controls.Add(suudal);
-            Controls.Add(SeatNUmber);
-            Controls.Add(passport);
-            Controls.Add(PassportNumber);
-            Name = "Form1";
+            Controls.Add(SeatNumberLabel);
+            Controls.Add(Name);
+            Controls.Add(FligthNumberLabel);
+            Controls.Add(Flight);
+            Controls.Add(NameLabel);
+            Controls.Add(SeatLabel);
+            Controls.Add(PassportNumberLabel);
+            Controls.Add(Passport);
+            //Name = "BoardingPassForm";
             Text = "Form1";
             ResumeLayout(false);
             PerformLayout();
@@ -162,15 +179,16 @@
 
         #endregion
 
-        private Label PassportNumber;
-        private Label passport;
-        private Label SeatNUmber;
-        private Label suudal;
-        private Label flightNumber;
-        private Label flight;
-        private Label label1;
-        private Label name;
+        private Label Passport;
+        private Label PassportNumberLabel;
+        private Label SeatLabel;
+        private Label NameLabel;
+        private Label Flight;
+        private Label FligthNumberLabel;
+        private Label Name;
+        private Label SeatNumberLabel;
         private Label label2;
         private Button UserOrderPrintButton;
+        private Label TimeLabel;
     }
 }

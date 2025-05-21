@@ -14,6 +14,7 @@ namespace FlightLibrary.DTO
             public string? SeatCode { get; set; } 
             public string FlightNumber { get; set; } = "";
             public int SeatId { get; set; }
+      
     }
 
 }

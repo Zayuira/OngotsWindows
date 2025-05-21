@@ -12,8 +12,8 @@ public partial class MainForm : Form
     HubConnection _hubConnection;
     List<Flight> flights = new List<Flight>();
     List<FlightDtos> flightDtos = new List<FlightDtos>();
-    PassengerDto PassengerDto = new PassengerDto();
 
+    private PassengerDto? passengerDto;
     private Button? selectedSeatButton = null;
     private string? selectedSeatNumber = null;
     private FlightDtos? currentFlightDto = null;
@@ -21,7 +21,9 @@ public partial class MainForm : Form
     public MainForm()
     {
         InitializeComponent();
+        passengerDto = new PassengerDto();
         AddFlightListFlowPanel();
+      
     }
 
     private async Task LoadFlightsFromApiAsync()
@@ -153,18 +155,21 @@ public partial class MainForm : Form
             }
 
             var allPassengers = flightDtos.SelectMany(f => f.Passengers).ToList();
+            
             var foundPassenger = allPassengers.FirstOrDefault(p =>
                 !string.IsNullOrEmpty(p.PassportNumber) &&
                 p.PassportNumber.Equals(searchPassport, StringComparison.OrdinalIgnoreCase));
-            PassengerDto = foundPassenger;
+            
+            passengerDto = foundPassenger;
+            //MessageBox.Show($"{passengerDto.PassportNumber}");
             if (foundPassenger != null)
             {
                 var passengerFlight = flightDtos.FirstOrDefault(f =>
                     f.Passengers.Any(p =>
                         !string.IsNullOrEmpty(p.PassportNumber) &&
                         p.PassportNumber.Equals(searchPassport, StringComparison.OrdinalIgnoreCase)));
-                MessageBox.Show($"{foundPassenger.SeatCode}");
-                if (PassengerDto.SeatCode != null)
+                
+                if (passengerDto.SeatCode != null)
                 {
                     CheckButton.Enabled = false;
                     CheckButton.BackColor = SystemColors.Control;
@@ -375,9 +380,14 @@ public partial class MainForm : Form
 
     private void PrintButton_Click(object sender, EventArgs e)
     {
-        using (var Form1 = new Form1())
+        if (passengerDto == null)
         {
-            Form1.ShowDialog();
+            MessageBox.Show("Зорчигчийн мэдээлэл олдсонгүй!");
+            return;
+        }
+        using (var printForm = new Form1(passengerDto))
+        {
+            printForm.ShowDialog();
         }
     }
 
@@ -402,18 +412,18 @@ public partial class MainForm : Form
             s.SeatNumber.Trim().Equals(button.Text.Trim(), StringComparison.OrdinalIgnoreCase));
         if (seat != null)
         {
-            PassengerDto.SeatCode = seat.SeatNumber;
-            PassengerDto.SeatId = seat.Id; // PassengerDto-д SeatId талбар байх ёстой!
+            passengerDto.SeatCode = seat.SeatNumber;
+            passengerDto.SeatId = seat.Id; // PassengerDto-д SeatId талбар байх ёстой!
         }
 
         ResultPassengerFlowPanel.Controls.Clear();
-        CreatePassengerInfo(PassengerDto);
+        CreatePassengerInfo(passengerDto);
     }
 
     private async void CheckButton_Click(object sender, EventArgs e)
     {
         
-        if (PassengerDto == null || PassengerDto.Id == 0)
+        if (passengerDto == null || passengerDto.Id == 0)
         {
             MessageBox.Show("Зорчигч сонгогдоогүй байна.");
             return;
@@ -441,7 +451,7 @@ public partial class MainForm : Form
             using var client = new HttpClient();
             var content = new StringContent(jsonRequest, Encoding.UTF8, "application/json");
 
-            var response = await client.PutAsync($"http://localhost:5000/api/passenger/{PassengerDto.Id}/seat", content);
+            var response = await client.PutAsync($"http://localhost:5000/api/passenger/{passengerDto.Id}/seat", content);
             if (response.IsSuccessStatusCode)
             {
                 MessageBox.Show("Суудлыг амжилттай шинэчиллээ.");
