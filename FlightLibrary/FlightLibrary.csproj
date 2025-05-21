@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Flight\" />
+    <Folder Include="Model\" />
   </ItemGroup>
 
 </Project>
