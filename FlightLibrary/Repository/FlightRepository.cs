@@ -10,12 +10,18 @@ public class FlightRepository : IFlightRepository
     {
         _context = context;
     }
-
     public async Task<List<Flight>> GetAllFlightsAsync()
-        => await _context.Flight.Include(f => f.Seats).ToListAsync();
+    => await _context.Flight
+        .Include(f => f.Seats)
+        .Include(f => f.Passengers) // Нэмэх хэрэгтэй!
+        .ToListAsync();
 
     public async Task<Flight?> GetFlightByIdAsync(int id)
-        => await _context.Flight.Include(f => f.Seats).FirstOrDefaultAsync(f => f.Id == id);
+        => await _context.Flight
+            .Include(f => f.Seats)
+            .Include(f => f.Passengers) // Нэмэх хэрэгтэй!
+            .FirstOrDefaultAsync(f => f.Id == id);
+
 
     public async Task UpdateFlightAsync(Flight flight)
     {

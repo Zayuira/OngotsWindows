@@ -159,7 +159,7 @@ public partial class MainForm : Form
 
             var lblPassengers = new Label
             {
-                Text = $"Зорчигчид: {dto.PassengersCount} хүн",
+                Text = $"Захиалсан зорчигчид: {dto.PassengersCount} хүн",
                 Font = new Font("Segoe UI", 9),
                 Location = new Point(10, 70),
                 AutoSize = true
@@ -197,6 +197,53 @@ public partial class MainForm : Form
         }
     }
     //BOLGONODOOOOOOOOOOOOOOOO
+    //private void SearchButton_Click(object sender, EventArgs e)
+    //{
+    //    try
+    //    {
+    //        // Clear previous search results
+    //        ResultPassengerFlowPanel.Controls.Clear();
+
+    //        string searchPassport = SearchTextBox.Text?.Trim();
+
+    //        if (string.IsNullOrEmpty(searchPassport))
+    //        {
+    //            MessageBox.Show("Паспортын дугаараа оруулна уу.");
+    //            return;
+    //        }
+
+    //        PassengerDto foundPassenger = null;
+
+    //        foreach (var flight in flightDtos)
+    //        {
+    //            MessageBox.Show($"NIIT PASSENGER{flight.PassengersCount}");
+    //            foundPassenger = flight.Passengers?.FirstOrDefault(p =>
+    //                !string.IsNullOrEmpty(p.PassportNumber) &&
+    //                p.PassportNumber.Equals(searchPassport, StringComparison.OrdinalIgnoreCase));
+
+    //            if (foundPassenger != null)
+    //            {
+    //                Console.WriteLine($"[DEBUG] Flight: {flight.Number}, Passenger: {foundPassenger.Name}, Passport: {foundPassenger.PassportNumber}");
+    //                break;
+    //            }
+    //        }
+
+    //        if (foundPassenger != null)
+    //        {
+    //            CreatePassengerInfo(foundPassenger);
+    //        }
+    //        else
+    //        {
+    //            CreateNotFoundPanel();
+    //        }
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        Console.WriteLine("[ERROR] " + ex.Message);
+    //        MessageBox.Show("Хайлт хийх явцад алдаа гарлаа. Алдааны мэдээлэл: " + ex.Message,
+    //                        "Алдаа", MessageBoxButtons.OK, MessageBoxIcon.Error);
+    //    }
+    //}
     private void SearchButton_Click(object sender, EventArgs e)
     {
         try
@@ -212,21 +259,13 @@ public partial class MainForm : Form
                 return;
             }
 
-            PassengerDto foundPassenger = null;
+            // Бүх нислэгүүдийн зорчигчдыг нэг жагсаалт болгон цуглуулах
+            var allPassengers = flightDtos.SelectMany(f => f.Passengers).ToList();
 
-            foreach (var flight in flightDtos)
-            {
-                MessageBox.Show($"NIIT PASSENGER{flight.PassengersCount}");
-                foundPassenger = flight.Passengers?.FirstOrDefault(p =>
-                    !string.IsNullOrEmpty(p.PassportNumber) &&
-                    p.PassportNumber.Equals(searchPassport, StringComparison.OrdinalIgnoreCase));
-
-                if (foundPassenger != null)
-                {
-                    Console.WriteLine($"[DEBUG] Flight: {flight.Number}, Passenger: {foundPassenger.Name}, Passport: {foundPassenger.PassportNumber}");
-                    break;
-                }
-            }
+            // PassportNumber-оор хайх
+            var foundPassenger = allPassengers.FirstOrDefault(p =>
+                !string.IsNullOrEmpty(p.PassportNumber) &&
+                p.PassportNumber.Equals(searchPassport, StringComparison.OrdinalIgnoreCase));
 
             if (foundPassenger != null)
             {
@@ -239,7 +278,6 @@ public partial class MainForm : Form
         }
         catch (Exception ex)
         {
-            Console.WriteLine("[ERROR] " + ex.Message);
             MessageBox.Show("Хайлт хийх явцад алдаа гарлаа. Алдааны мэдээлэл: " + ex.Message,
                             "Алдаа", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
