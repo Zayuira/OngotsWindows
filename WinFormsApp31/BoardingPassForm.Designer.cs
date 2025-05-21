@@ -36,7 +36,8 @@
             flight = new Label();
             label1 = new Label();
             name = new Label();
-            destination = new Label();
+            label2 = new Label();
+            UserOrderPrintButton = new Button();
             SuspendLayout();
             // 
             // PassportNumber
@@ -119,22 +120,32 @@
             name.TabIndex = 7;
             name.Text = "XXXXXXXXX";
             // 
-            // destination
+            // label2
             // 
-            destination.AutoSize = true;
-            destination.Font = new Font("Segoe UI", 12F);
-            destination.Location = new Point(12, 426);
-            destination.Name = "destination";
-            destination.Size = new Size(64, 28);
-            destination.TabIndex = 8;
-            destination.Text = "Name";
+            label2.AutoSize = true;
+            label2.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label2.Location = new Point(12, 9);
+            label2.Name = "label2";
+            label2.Size = new Size(228, 28);
+            label2.TabIndex = 8;
+            label2.Text = "Захиалагчийн мэдээлэл";
+            // 
+            // UserOrderPrintButton
+            // 
+            UserOrderPrintButton.Location = new Point(12, 453);
+            UserOrderPrintButton.Name = "UserOrderPrintButton";
+            UserOrderPrintButton.Size = new Size(130, 46);
+            UserOrderPrintButton.TabIndex = 9;
+            UserOrderPrintButton.Text = "Хэвлэх";
+            UserOrderPrintButton.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(517, 663);
-            Controls.Add(destination);
+            Controls.Add(UserOrderPrintButton);
+            Controls.Add(label2);
             Controls.Add(name);
             Controls.Add(label1);
             Controls.Add(flight);
@@ -159,6 +170,7 @@
         private Label flight;
         private Label label1;
         private Label name;
-        private Label destination;
+        private Label label2;
+        private Button UserOrderPrintButton;
     }
 }

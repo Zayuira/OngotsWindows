@@ -11,8 +11,9 @@ public partial class MainForm : Form
     HubConnection _hubConnection;
     List<Flight> flights = new List<Flight>();
     List<FlightDtos> flightDtos = new List<FlightDtos>();
-
-
+    PassengerDto PassengerDto = new PassengerDto();
+    private Button? selectedSeatButton = null;
+    private string? selectedSeatNumber = null;
     public MainForm()
     {
         InitializeComponent();
@@ -52,7 +53,7 @@ public partial class MainForm : Form
             }
         }
     }
- 
+
 
     private void AddFlightListFlowPanel()
     {
@@ -135,7 +136,7 @@ public partial class MainForm : Form
         }
     }
 
-    
+
     private void SearchButton_Click(object sender, EventArgs e)
     {
         try
@@ -160,7 +161,7 @@ public partial class MainForm : Form
             var foundPassenger = allPassengers.FirstOrDefault(p =>
                 !string.IsNullOrEmpty(p.PassportNumber) &&
                 p.PassportNumber.Equals(searchPassport, StringComparison.OrdinalIgnoreCase));
-
+            PassengerDto = foundPassenger;
             if (foundPassenger != null)
             {
                 // Зорчигч аль нислэгт багтаж байгааг олж авна
@@ -259,58 +260,6 @@ public partial class MainForm : Form
 
         FlightListFlowPanel.Controls.Add(flightPanel);
     }
-    //private void ShowFlightSeats(FlightDtos flight)
-    //{
-    //    // 1. TableLayoutPanel дээрх бүх button-уудыг шалгана
-    //    foreach (Control control in tableLayoutPanel1.Controls)
-    //    {
-    //        if (control is Button seatButton)
-    //        {
-    //            // Суудлын дугаар нь button-ийн Text гэж үзье (жишээ нь "1A", "2B" ...)
-    //            string seatNumber = seatButton.Text;
-
-    //            // тухайн суудлыг flight.Seats-аас хайна
-    //            var seat = flight.Seats.FirstOrDefault(s => s.SeatNumber == seatNumber);
-    //            MessageBox.Show($"Button: {seatNumber}, DB Seat: {seat?.SeatNumber}, Assigned: {seat?.IsAssigned}");
-    //            if (seat != null && seat.IsAssigned)
-    //            {
-    //                // Хэрвээ энэ суудал захиалагдсан бол
-    //                seatButton.Enabled = false;
-    //                seatButton.BackColor = Color.LightGray; // эсвэл өөр өнгө
-    //            }
-    //            else
-    //            {
-    //                // Захиалагдаагүй бол идэвхтэй, анхны өнгөөр
-    //                seatButton.Enabled = true;
-    //                seatButton.BackColor = SystemColors.Control;
-    //            }
-    //        }
-    //    }
-    //}
-    //private void ShowFlightSeats(FlightDtos flight)
-    //{
-    //    foreach (Control control in tableLayoutPanel1.Controls)
-    //    {
-    //        if (control is Button seatButton)
-    //        {
-    //            string seatNumber = seatButton.Text.Trim();
-
-    //            var seat = flight.Seats.FirstOrDefault(s =>
-    //                s.SeatNumber.Trim().Equals(seatNumber, StringComparison.OrdinalIgnoreCase));
-    //            MessageBox.Show($"Button: {seatNumber}, DB Seat: {seat?.SeatNumber}, Assigned: {seat?.IsAssigned}");
-    //            if (seat != null && seat.IsAssigned)
-    //            {
-    //                seatButton.Enabled = false;
-    //                seatButton.BackColor = Color.LightGray;
-    //            }
-    //            else
-    //            {
-    //                seatButton.Enabled = true;
-    //                seatButton.BackColor = SystemColors.Control;
-    //            }
-    //        }
-    //    }
-    //}
 
     private void ShowFlightSeats(FlightDtos flight)
     {
@@ -398,12 +347,20 @@ public partial class MainForm : Form
             Location = new Point(10, 40),
             AutoSize = true
         };
+        var lbluserSeatnumber = new Label
+        {
+            Text = $"Зорчигчийн суудал: {passenger.SeatCode}",
+            Font = new Font("Segoe UI", 9),
+            Location = new Point(10, 70),
+            AutoSize = true
+        };
 
         passengerInfoPanel.Controls.Add(lblPassengerName);
         passengerInfoPanel.Controls.Add(lblPassportNumber);
+        passengerInfoPanel.Controls.Add(lbluserSeatnumber);
         ResultPassengerFlowPanel.Controls.Add(passengerInfoPanel);
     }
-    
+
     private void CreateNotFoundPanel()
     {
         var notFoundPanel = new Panel
@@ -422,9 +379,59 @@ public partial class MainForm : Form
             Location = new Point(10, 10),
             AutoSize = true
         };
-        
+
         notFoundPanel.Controls.Add(lblNotFound);
         ResultPassengerFlowPanel.Controls.Add(notFoundPanel);
     }
 
+    private void PrintButton_Click(object sender, EventArgs e)
+    {
+        using (var Form1 = new Form1())
+        {
+            Form1.ShowDialog();
+        }
+    }
+
+    private void Seat1_Click(object sender, EventArgs e)
+    {
+        Button button = sender as Button;
+        if (button == null) return;
+
+        // Өмнө сонгосон button байвал буцаагаад идэвхтэй болгоно
+        if (selectedSeatButton != null && selectedSeatButton != button)
+        {
+            selectedSeatButton.Enabled = true;
+            selectedSeatButton.BackColor = SystemColors.Control;
+        }
+
+        // Одоогийн сонголтыг тэмдэглэнэ
+        selectedSeatButton = button;
+        selectedSeatNumber = button.Text;
+
+        // Сонгогдсон суудлыг тодруулж өөр өнгө болго (disable хийхгүй!)
+        button.BackColor = Color.LightSkyBlue; // эсвэл өөр өнгө сонгож болно
+                                               // button.Enabled = false;  // энэ мөрийг ХАС!
+        PassengerDto.SeatCode = button.Text;
+
+        ResultPassengerFlowPanel.Controls.Clear();
+        CreatePassengerInfo(PassengerDto);
+    }
+
+    private void CheckButton_Click(object sender, EventArgs e)
+    {
+        if (selectedSeatButton != null)
+        {
+            selectedSeatButton.Enabled = false; // Одоо л disable болгоно!
+            selectedSeatButton.BackColor = Color.LightGray;
+            // Хэрвээ суудлын кодыг зорчигчид бичих хэрэгтэй бол энд бичнэ
+            PassengerDto.SeatCode = selectedSeatNumber;
+            // Бусад API руу илгээх, DB-д хадгалах үйлдлээ энд хийнэ
+        }
+        else
+        {
+            MessageBox.Show("Суудал сонгоно уу!");
+        }
+        CheckButton.Enabled = false;
+        CheckButton.BackColor = Color.LightGray;// Check button-ийг идэвхгүй болгоно
+    }
 }
