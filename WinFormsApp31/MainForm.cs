@@ -16,7 +16,7 @@ public partial class MainForm : Form
 
     private Button? selectedSeatButton = null;
     private string? selectedSeatNumber = null;
-    private FlightDtos? currentFlightDto = null; // ШИНЭ: сонгосон нислэг хадгалах
+    private FlightDtos? currentFlightDto = null;
 
     public MainForm()
     {
@@ -138,6 +138,8 @@ public partial class MainForm : Form
     {
         try
         {
+            CheckButton.Enabled = true;
+           
             ResultPassengerFlowPanel.Controls.Clear();
             FlightListFlowPanel.Controls.Clear();
 
@@ -161,16 +163,26 @@ public partial class MainForm : Form
                     f.Passengers.Any(p =>
                         !string.IsNullOrEmpty(p.PassportNumber) &&
                         p.PassportNumber.Equals(searchPassport, StringComparison.OrdinalIgnoreCase)));
-
+                MessageBox.Show($"{foundPassenger.SeatCode}");
+                if (PassengerDto.SeatCode != null)
+                {
+                    CheckButton.Enabled = false;
+                    CheckButton.BackColor = SystemColors.Control;
+                }
+                else
+                {
+                    CheckButton.Enabled = true ;
+                }
                 if (passengerFlight != null)
                 {
+                    
                     DrawSingleFlightOnPanel(passengerFlight);
                 }
                 else
                 {
                     DrawNoFlightPanel();
                 }
-
+                
                 CreatePassengerInfo(foundPassenger);
             }
             else
@@ -335,6 +347,7 @@ public partial class MainForm : Form
         passengerInfoPanel.Controls.Add(lblPassportNumber);
         passengerInfoPanel.Controls.Add(lbluserSeatnumber);
         ResultPassengerFlowPanel.Controls.Add(passengerInfoPanel);
+      
     }
 
     private void CreateNotFoundPanel()
@@ -432,8 +445,8 @@ public partial class MainForm : Form
             if (response.IsSuccessStatusCode)
             {
                 MessageBox.Show("Суудлыг амжилттай шинэчиллээ.");
-                //await UpdatePassengerSeatAsync(PassengerDto.Id, PassengerDto.SeatId);
                 await LoadFlightsFromApiAsync(); // Refresh data
+            
             }
             
             else if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
