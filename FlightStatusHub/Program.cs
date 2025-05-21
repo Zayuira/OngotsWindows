@@ -25,6 +25,10 @@ namespace FlightStatusHub
             // Register FlightService (IFlightService болон FlightService заавал үүссэн байх шаардлагатай)
             builder.Services.AddScoped<IFlightService, FlightService>();
 
+            builder.Services.AddScoped<IPassengerRepository, PassengerRepository>();
+
+            builder.Services.AddScoped<IPassengerService, PassengerService>();
+
             // Hosted service, controllers, CORS
             builder.Services.AddHostedService<Worker>();
             builder.Services.AddControllers();

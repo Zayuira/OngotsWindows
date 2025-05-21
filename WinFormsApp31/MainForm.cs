@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System.Text;
+using System.Text.Json;
 using FlightLibrary;
 using FlightLibrary.DTO;
 using Microsoft.AspNetCore.SignalR.Client;
@@ -12,18 +13,20 @@ public partial class MainForm : Form
     List<Flight> flights = new List<Flight>();
     List<FlightDtos> flightDtos = new List<FlightDtos>();
     PassengerDto PassengerDto = new PassengerDto();
+
     private Button? selectedSeatButton = null;
     private string? selectedSeatNumber = null;
+    private FlightDtos? currentFlightDto = null; // ШИНЭ: сонгосон нислэг хадгалах
+
     public MainForm()
     {
         InitializeComponent();
         AddFlightListFlowPanel();
-
     }
+
     private async Task LoadFlightsFromApiAsync()
     {
-        string apiUrl = "http://localhost:5000/api/flights";// API-ийн чинь URL
-
+        string apiUrl = "http://localhost:5000/api/flights";
         using (HttpClient client = new HttpClient())
         {
             try
@@ -37,15 +40,14 @@ public partial class MainForm : Form
                     PropertyNameCaseInsensitive = true
                 });
 
-                // DTO-оос Domain Model руу хөрвүүлэлт
                 flights = flightDtos.Select(dto => new Flight(
                     dto.Id,
                     dto.Number,
                     Enum.TryParse(dto.Status, out Flight.FlightStatusEnum status) ? status : Flight.FlightStatusEnum.Registering,
-                    new List<Passenger>(), new List<Seat>() // TODO: Суудлын жагсаалтыг дараа холбоно
+                    new List<Passenger>(), new List<Seat>()
                 )).ToList();
 
-                AddFlightListFlowPanel(); // UI-д харуулах
+                AddFlightListFlowPanel();
             }
             catch (Exception ex)
             {
@@ -54,12 +56,10 @@ public partial class MainForm : Form
         }
     }
 
-
     private void AddFlightListFlowPanel()
     {
         FlightListFlowPanel.Controls.Clear();
-
-        foreach (var dto in flightDtos) // ✅ flightDtos-г шууд ашиглана
+        foreach (var dto in flightDtos)
         {
             var flightPanel = new Panel
             {
@@ -112,21 +112,19 @@ public partial class MainForm : Form
             flightPanel.Click += (s, e) =>
             {
                 tableLayoutPanel1.Visible = true;
-                // TODO: Flight дэлгэрэнгүй мэдээлэл гаргах хэсгийг хэрэгжүүлэх
+                currentFlightDto = dto; // ШИНЭ: сонгосон нислэгийг хадгална
+                ShowFlightSeats(dto);
             };
 
             FlightListFlowPanel.Controls.Add(flightPanel);
         }
     }
 
-
     private async void Form1_Load(object sender, EventArgs e)
     {
         await LoadFlightsFromApiAsync();
         blazorWebView1.WebView.Source = new Uri(_hubUrl);
-        //label_ConnectionStatus.Text = _hubConnection.State.ToString();
     }
-
 
     private void ChangeStateButton_Click(object sender, EventArgs e)
     {
@@ -136,14 +134,12 @@ public partial class MainForm : Form
         }
     }
 
-
     private void SearchButton_Click(object sender, EventArgs e)
     {
         try
         {
-            // Clear previous search results
             ResultPassengerFlowPanel.Controls.Clear();
-            FlightListFlowPanel.Controls.Clear(); // Нэмэлт: flight list panel-ийг бас цэвэрлэнэ
+            FlightListFlowPanel.Controls.Clear();
 
             string searchPassport = SearchTextBox.Text?.Trim();
 
@@ -154,17 +150,13 @@ public partial class MainForm : Form
                 return;
             }
 
-            // Бүх нислэгүүдийн зорчигчдыг нэг жагсаалт болгон цуглуулах
             var allPassengers = flightDtos.SelectMany(f => f.Passengers).ToList();
-
-            // PassportNumber-оор хайх
             var foundPassenger = allPassengers.FirstOrDefault(p =>
                 !string.IsNullOrEmpty(p.PassportNumber) &&
                 p.PassportNumber.Equals(searchPassport, StringComparison.OrdinalIgnoreCase));
             PassengerDto = foundPassenger;
             if (foundPassenger != null)
             {
-                // Зорчигч аль нислэгт багтаж байгааг олж авна
                 var passengerFlight = flightDtos.FirstOrDefault(f =>
                     f.Passengers.Any(p =>
                         !string.IsNullOrEmpty(p.PassportNumber) &&
@@ -172,21 +164,17 @@ public partial class MainForm : Form
 
                 if (passengerFlight != null)
                 {
-                    // Зөвхөн тэр нислэгийг FlightListFlowPanel-д зурна
                     DrawSingleFlightOnPanel(passengerFlight);
                 }
                 else
                 {
-                    // Хэрвээ зорчигч олдсон ч нислэгт холбогдоогүй бол
                     DrawNoFlightPanel();
                 }
 
-                // Мэдээлэл panel-д зорчигчийн мэдээллийг зурна
                 CreatePassengerInfo(foundPassenger);
             }
             else
             {
-                // Зорчигч олдоогүй бол
                 CreateNotFoundPanel();
                 DrawNoFlightPanel();
             }
@@ -198,7 +186,6 @@ public partial class MainForm : Form
         }
     }
 
-    // Зөвхөн нэг нислэгийг FlightListFlowPanel-д зурна
     private void DrawSingleFlightOnPanel(FlightDtos dto)
     {
         FlightListFlowPanel.Controls.Clear();
@@ -254,8 +241,8 @@ public partial class MainForm : Form
         flightPanel.Click += (s, e) =>
         {
             tableLayoutPanel1.Visible = true;
+            currentFlightDto = dto; // ШИНЭ: сонгосон нислэг хадгална
             ShowFlightSeats(dto);
-            // TODO: Flight дэлгэрэнгүй мэдээлэл гаргах хэсгийг хэрэгжүүлэх
         };
 
         FlightListFlowPanel.Controls.Add(flightPanel);
@@ -263,27 +250,17 @@ public partial class MainForm : Form
 
     private void ShowFlightSeats(FlightDtos flight)
     {
-
         foreach (Control control in tableLayoutPanel1.Controls)
         {
             if (control is Button seatButton)
             {
-                string seatNumber = seatButton.Text.Trim().ToUpperInvariant();
-
+                string seatCode = seatButton.Text.Trim();
                 var seat = flight.Seats.FirstOrDefault(s =>
-                    s.Id.ToString() == seatNumber);
+                    s.SeatNumber.Trim().Equals(seatCode, StringComparison.OrdinalIgnoreCase));
 
-                if (seat == null)
-                {
-                    seatButton.Enabled = true;
-                    seatButton.BackColor = SystemColors.Control;
-                    Console.WriteLine($"[WARN] Seat not found for button: [{seatButton.Text}]");
-                    continue;
-                }
+                bool isReserved = flight.Passengers.Any(p => p.SeatCode == seatCode);
 
-                Console.WriteLine($"[MATCH] Button: [{seatButton.Text}] ↔ DB Seat: [{seat.SeatNumber}] Assigned: {seat.IsAssigned}");
-
-                if (seat.IsAssigned)
+                if (seat != null && isReserved)
                 {
                     seatButton.Enabled = false;
                     seatButton.BackColor = Color.LightGray;
@@ -296,7 +273,6 @@ public partial class MainForm : Form
             }
         }
     }
-    // Нислэг захиалаагүй гэсэн panel зурна
     private void DrawNoFlightPanel()
     {
         FlightListFlowPanel.Controls.Clear();
@@ -392,46 +368,92 @@ public partial class MainForm : Form
         }
     }
 
+    // Бүх суудлын button-д энэ handler-г онооно уу!
     private void Seat1_Click(object sender, EventArgs e)
     {
         Button button = sender as Button;
-        if (button == null) return;
+        if (button == null || currentFlightDto == null) return;
 
-        // Өмнө сонгосон button байвал буцаагаад идэвхтэй болгоно
         if (selectedSeatButton != null && selectedSeatButton != button)
         {
             selectedSeatButton.Enabled = true;
             selectedSeatButton.BackColor = SystemColors.Control;
         }
 
-        // Одоогийн сонголтыг тэмдэглэнэ
         selectedSeatButton = button;
         selectedSeatNumber = button.Text;
 
-        // Сонгогдсон суудлыг тодруулж өөр өнгө болго (disable хийхгүй!)
-        button.BackColor = Color.LightSkyBlue; // эсвэл өөр өнгө сонгож болно
-                                               // button.Enabled = false;  // энэ мөрийг ХАС!
-        PassengerDto.SeatCode = button.Text;
+        button.BackColor = Color.LightSkyBlue;
+
+        var seat = currentFlightDto.Seats.FirstOrDefault(s =>
+            s.SeatNumber.Trim().Equals(button.Text.Trim(), StringComparison.OrdinalIgnoreCase));
+        if (seat != null)
+        {
+            PassengerDto.SeatCode = seat.SeatNumber;
+            PassengerDto.SeatId = seat.Id; // PassengerDto-д SeatId талбар байх ёстой!
+        }
 
         ResultPassengerFlowPanel.Controls.Clear();
         CreatePassengerInfo(PassengerDto);
     }
 
-    private void CheckButton_Click(object sender, EventArgs e)
+    private async void CheckButton_Click(object sender, EventArgs e)
     {
-        if (selectedSeatButton != null)
+        
+        if (PassengerDto == null || PassengerDto.Id == 0)
         {
-            selectedSeatButton.Enabled = false; // Одоо л disable болгоно!
-            selectedSeatButton.BackColor = Color.LightGray;
-            // Хэрвээ суудлын кодыг зорчигчид бичих хэрэгтэй бол энд бичнэ
-            PassengerDto.SeatCode = selectedSeatNumber;
-            // Бусад API руу илгээх, DB-д хадгалах үйлдлээ энд хийнэ
+            MessageBox.Show("Зорчигч сонгогдоогүй байна.");
+            return;
         }
-        else
+
+        if (string.IsNullOrEmpty(selectedSeatNumber) || selectedSeatButton == null)
         {
-            MessageBox.Show("Суудал сонгоно уу!");
+            MessageBox.Show("Суудал сонгоно уу.");
+            return;
         }
-        CheckButton.Enabled = false;
-        CheckButton.BackColor = Color.LightGray;// Check button-ийг идэвхгүй болгоно
+
+        // Find SeatId from current flight using selected seat code
+        var seat = currentFlightDto?.Seats?.FirstOrDefault(s => s.SeatNumber == selectedSeatNumber);
+        if (seat == null)
+        {
+            MessageBox.Show("Суудал олдсонгүй.");
+            return;
+        }
+
+        try
+        {
+            var request = new { SeatId = seat.Id };
+            string jsonRequest = JsonSerializer.Serialize(request);
+
+            using var client = new HttpClient();
+            var content = new StringContent(jsonRequest, Encoding.UTF8, "application/json");
+
+            var response = await client.PutAsync($"http://localhost:5000/api/passenger/{PassengerDto.Id}/seat", content);
+            if (response.IsSuccessStatusCode)
+            {
+                MessageBox.Show("Суудлыг амжилттай шинэчиллээ.");
+                //await UpdatePassengerSeatAsync(PassengerDto.Id, PassengerDto.SeatId);
+                await LoadFlightsFromApiAsync(); // Refresh data
+            }
+            
+            else if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+            {
+                MessageBox.Show("Зорчигч эсвэл суудал олдсонгүй.");
+            }
+            else
+            {
+                string error = await response.Content.ReadAsStringAsync();
+                MessageBox.Show("Алдаа: " + error);
+            }
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show("Шинэчлэх үед алдаа гарлаа: " + ex.Message);
+        }
     }
+
+
+ 
+
+
 }
