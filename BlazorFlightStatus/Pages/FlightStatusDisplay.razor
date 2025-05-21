@@ -1,28 +1,29 @@
-﻿@page "/flightstatusdisplay"
+﻿
+@page "/flightstatusdisplay"
 @using Microsoft.AspNetCore.SignalR.Client
-@using System.Collections.Generic
+@using FlightLibrary.Model
 @implements IAsyncDisposable
 @inject NavigationManager NavigationManager
 
 <PageTitle>Flight Statuses</PageTitle>
 
-<div class="departure-title">Departure</div>
-
-<h1>Flight Statuses</h1>
+<div class="title-box">✈️ Departure Flights</div>
 
 @if (flights.Count == 0)
 {
-    <p><em>No flight data available.</em></p>
+    <div class="no-data">
+        <p><em>🚫 No flight data available at the moment.</em></p>
+    </div>
 }
 else
 {
-    <table class="table table-dark table-striped">
-        <thead>
+    <table class="table table-hover table-bordered flight-table">
+        <thead class="table-dark">
             <tr>
-                <th>Flight Number</th>
+                <th>Flight</th>
                 <th>Status</th>
-                <th>Origin</th>
-                <th>Destination</th>
+                <th>From</th>
+                <th>To</th>
                 <th>Departure</th>
                 <th>Arrival</th>
             </tr>
@@ -32,7 +33,11 @@ else
             {
                 <tr>
                     <td>@flight.FlightNumber</td>
-                    <td>@flight.Status</td>
+                    <td>
+                        <span class="badge @GetStatusClass(flight.Status)">
+                            @flight.Status
+                        </span>
+                    </td>
                     <td>@flight.Origin</td>
                     <td>@flight.Destination</td>
                     <td>@flight.DepartureTime.ToString("g")</td>
@@ -44,27 +49,60 @@ else
 }
 
 <div class="alert alert-info mt-3">
-    SignalR Connection State: @hubConnection?.State.ToString()
+    🔄 SignalR Connection: <strong>@hubConnection?.State.ToString()</strong>
 </div>
 
 <style>
-    .departure-title {
-    font-size: 2rem;
-    font-weight: bold;
-    color: #fff;
-    background: #212529;
-    padding: 1rem;
-    border-radius: 0.5rem;
-    margin-bottom: 1.5rem;
-    text-align: center;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    .title-box {
+        font-size: 2.2rem;
+        font-weight: 700;
+        color: white;
+        background: linear-gradient(to right, #0d6efd, #6610f2);
+        padding: 1rem;
+        border-radius: 0.75rem;
+        text-align: center;
+        margin-bottom: 2rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
     }
-    body, .table-dark {
-    background-color: #181a1b !important;
-    color: #f8f9fa !important;
+
+    .flight-table td, .flight-table th {
+        vertical-align: middle;
+        text-align: center;
     }
-    .table-dark th, .table-dark td {
-    color: #f8f9fa !important;
+
+    .no-data {
+        text-align: center;
+        padding: 2rem;
+        font-size: 1.2rem;
+        color: #ccc;
+    }
+
+    body {
+        background-color: #121212;
+        color: #f1f1f1;
+    }
+
+    .badge {
+        font-size: 1rem;
+        padding: 0.5em 1em;
+        border-radius: 1rem;
+    }
+
+    .badge-ontime {
+        background-color: #28a745;
+    }
+
+    .badge-delayed {
+        background-color: #dc3545;
+    }
+
+    .badge-boarding {
+        background-color: #ffc107;
+        color: black;
+    }
+
+    .badge-cancelled {
+        background-color: #6c757d;
     }
 </style>
 
@@ -111,21 +149,25 @@ else
 
         hubConnection.On<string, string>("ReceiveFlightStatus", (flight, status) =>
         {
-            Console.WriteLine($"Received flight status: {flight} - {status}");
             var existingFlight = flights.FirstOrDefault(f => f.FlightNumber == flight);
             if (existingFlight != null)
             {
                 existingFlight.Status = status;
+                InvokeAsync(StateHasChanged);
             }
-            // else
-            // {
-            //     flights.Add(flight);
-            // }
-            InvokeAsync(StateHasChanged);
         });
-        
+
         await hubConnection.StartAsync();
     }
+
+    private string GetStatusClass(string status) => status.ToLower() switch
+    {
+        "on time" => "badge-ontime",
+        "delayed" => "badge-delayed",
+        "boarding" => "badge-boarding",
+        "cancelled" => "badge-cancelled",
+        _ => "badge-secondary"
+    };
 
     public async ValueTask DisposeAsync()
     {
@@ -133,15 +175,5 @@ else
         {
             await hubConnection.DisposeAsync();
         }
-    }
-
-    public class FlightStatus
-    {
-        public string FlightNumber { get; set; } = "";
-        public string Status { get; set; } = "";
-        public string Origin { get; set; } = "";
-        public string Destination { get; set; } = "";
-        public DateTime DepartureTime { get; set; }
-        public DateTime ArrivalTime { get; set; }
     }
 }

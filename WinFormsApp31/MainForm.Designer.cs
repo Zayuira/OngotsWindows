@@ -33,7 +33,7 @@ partial class MainForm
         SearchTableLayout = new TableLayoutPanel();
         SearchTextBox = new TextBox();
         SearchButton = new Button();
-        ResultPassenger = new FlowLayoutPanel();
+        ResultPassengerFlowPanel = new FlowLayoutPanel();
         ButtonTable = new TableLayoutPanel();
         PrintButton = new Button();
         CheckButton = new Button();
@@ -127,7 +127,7 @@ partial class MainForm
         SearchTableLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 30F));
         SearchTableLayout.Controls.Add(SearchTextBox, 0, 0);
         SearchTableLayout.Controls.Add(SearchButton, 1, 0);
-        SearchTableLayout.Controls.Add(ResultPassenger, 0, 1);
+        SearchTableLayout.Controls.Add(ResultPassengerFlowPanel, 0, 1);
         SearchTableLayout.Dock = DockStyle.Fill;
         SearchTableLayout.Location = new Point(3, 3);
         SearchTableLayout.Name = "SearchTableLayout";
@@ -144,6 +144,7 @@ partial class MainForm
         SearchTextBox.Name = "SearchTextBox";
         SearchTextBox.Size = new Size(211, 27);
         SearchTextBox.TabIndex = 0;
+        SearchTextBox.TextAlign = HorizontalAlignment.Right;
         // 
         // SearchButton
         // 
@@ -154,14 +155,15 @@ partial class MainForm
         SearchButton.TabIndex = 1;
         SearchButton.Text = "Хайх";
         SearchButton.UseVisualStyleBackColor = true;
+        SearchButton.Click += SearchButton_Click;
         // 
-        // ResultPassenger
+        // ResultPassengerFlowPanel
         // 
-        ResultPassenger.Dock = DockStyle.Fill;
-        ResultPassenger.Location = new Point(3, 39);
-        ResultPassenger.Name = "ResultPassenger";
-        ResultPassenger.Size = new Size(211, 78);
-        ResultPassenger.TabIndex = 2;
+        ResultPassengerFlowPanel.Dock = DockStyle.Fill;
+        ResultPassengerFlowPanel.Location = new Point(3, 39);
+        ResultPassengerFlowPanel.Name = "ResultPassengerFlowPanel";
+        ResultPassengerFlowPanel.Size = new Size(211, 78);
+        ResultPassengerFlowPanel.TabIndex = 2;
         // 
         // ButtonTable
         // 
@@ -189,6 +191,7 @@ partial class MainForm
         PrintButton.TabIndex = 1;
         PrintButton.Text = "Хэвлэх";
         PrintButton.UseVisualStyleBackColor = true;
+        PrintButton.Click += PrintButton_Click;
         // 
         // CheckButton
         // 
@@ -199,6 +202,7 @@ partial class MainForm
         CheckButton.TabIndex = 0;
         CheckButton.Text = "Баталгаажуулах";
         CheckButton.UseVisualStyleBackColor = true;
+        CheckButton.Click += CheckButton_Click;
         // 
         // ChangeStateButton
         // 
@@ -313,8 +317,9 @@ partial class MainForm
         Seat40.Name = "Seat40";
         Seat40.Size = new Size(55, 26);
         Seat40.TabIndex = 49;
-        Seat40.Text = "40";
+        Seat40.Text = "10D";
         Seat40.UseVisualStyleBackColor = false;
+        Seat40.Click += Seat1_Click;
         // 
         // Seat39
         // 
@@ -324,8 +329,9 @@ partial class MainForm
         Seat39.Name = "Seat39";
         Seat39.Size = new Size(55, 26);
         Seat39.TabIndex = 48;
-        Seat39.Text = "39";
+        Seat39.Text = "10C";
         Seat39.UseVisualStyleBackColor = false;
+        Seat39.Click += Seat1_Click;
         // 
         // Seat38
         // 
@@ -335,8 +341,9 @@ partial class MainForm
         Seat38.Name = "Seat38";
         Seat38.Size = new Size(55, 26);
         Seat38.TabIndex = 46;
-        Seat38.Text = "38";
+        Seat38.Text = "10B";
         Seat38.UseVisualStyleBackColor = false;
+        Seat38.Click += Seat1_Click;
         // 
         // Seat37
         // 
@@ -346,8 +353,9 @@ partial class MainForm
         Seat37.Name = "Seat37";
         Seat37.Size = new Size(55, 26);
         Seat37.TabIndex = 45;
-        Seat37.Text = "37";
+        Seat37.Text = "10A";
         Seat37.UseVisualStyleBackColor = false;
+        Seat37.Click += Seat1_Click;
         // 
         // Seat36
         // 
@@ -357,8 +365,9 @@ partial class MainForm
         Seat36.Name = "Seat36";
         Seat36.Size = new Size(55, 26);
         Seat36.TabIndex = 44;
-        Seat36.Text = "36";
+        Seat36.Text = "9D";
         Seat36.UseVisualStyleBackColor = false;
+        Seat36.Click += Seat1_Click;
         // 
         // Seat35
         // 
@@ -368,8 +377,9 @@ partial class MainForm
         Seat35.Name = "Seat35";
         Seat35.Size = new Size(55, 26);
         Seat35.TabIndex = 43;
-        Seat35.Text = "35";
+        Seat35.Text = "9C";
         Seat35.UseVisualStyleBackColor = false;
+        Seat35.Click += Seat1_Click;
         // 
         // Seat34
         // 
@@ -379,8 +389,9 @@ partial class MainForm
         Seat34.Name = "Seat34";
         Seat34.Size = new Size(55, 26);
         Seat34.TabIndex = 41;
-        Seat34.Text = "34";
+        Seat34.Text = "9B";
         Seat34.UseVisualStyleBackColor = false;
+        Seat34.Click += Seat1_Click;
         // 
         // Seat33
         // 
@@ -390,8 +401,9 @@ partial class MainForm
         Seat33.Name = "Seat33";
         Seat33.Size = new Size(55, 26);
         Seat33.TabIndex = 40;
-        Seat33.Text = "33";
+        Seat33.Text = "9A";
         Seat33.UseVisualStyleBackColor = false;
+        Seat33.Click += Seat1_Click;
         // 
         // Seat32
         // 
@@ -401,8 +413,9 @@ partial class MainForm
         Seat32.Name = "Seat32";
         Seat32.Size = new Size(55, 26);
         Seat32.TabIndex = 39;
-        Seat32.Text = "32";
+        Seat32.Text = "8D";
         Seat32.UseVisualStyleBackColor = false;
+        Seat32.Click += Seat1_Click;
         // 
         // Seat31
         // 
@@ -412,8 +425,9 @@ partial class MainForm
         Seat31.Name = "Seat31";
         Seat31.Size = new Size(55, 26);
         Seat31.TabIndex = 38;
-        Seat31.Text = "31";
+        Seat31.Text = "8C";
         Seat31.UseVisualStyleBackColor = false;
+        Seat31.Click += Seat1_Click;
         // 
         // Seat30
         // 
@@ -423,8 +437,9 @@ partial class MainForm
         Seat30.Name = "Seat30";
         Seat30.Size = new Size(55, 26);
         Seat30.TabIndex = 36;
-        Seat30.Text = "30";
+        Seat30.Text = "8B";
         Seat30.UseVisualStyleBackColor = false;
+        Seat30.Click += Seat1_Click;
         // 
         // Seat29
         // 
@@ -434,8 +449,9 @@ partial class MainForm
         Seat29.Name = "Seat29";
         Seat29.Size = new Size(55, 26);
         Seat29.TabIndex = 35;
-        Seat29.Text = "29";
+        Seat29.Text = "8A";
         Seat29.UseVisualStyleBackColor = false;
+        Seat29.Click += Seat1_Click;
         // 
         // Seat28
         // 
@@ -445,8 +461,9 @@ partial class MainForm
         Seat28.Name = "Seat28";
         Seat28.Size = new Size(55, 26);
         Seat28.TabIndex = 34;
-        Seat28.Text = "28";
+        Seat28.Text = "7D";
         Seat28.UseVisualStyleBackColor = false;
+        Seat28.Click += Seat1_Click;
         // 
         // Seat27
         // 
@@ -456,8 +473,9 @@ partial class MainForm
         Seat27.Name = "Seat27";
         Seat27.Size = new Size(55, 26);
         Seat27.TabIndex = 33;
-        Seat27.Text = "27";
+        Seat27.Text = "7C";
         Seat27.UseVisualStyleBackColor = false;
+        Seat27.Click += Seat1_Click;
         // 
         // Seat26
         // 
@@ -467,8 +485,9 @@ partial class MainForm
         Seat26.Name = "Seat26";
         Seat26.Size = new Size(55, 26);
         Seat26.TabIndex = 31;
-        Seat26.Text = "26";
+        Seat26.Text = "7B";
         Seat26.UseVisualStyleBackColor = false;
+        Seat26.Click += Seat1_Click;
         // 
         // Seat25
         // 
@@ -478,8 +497,9 @@ partial class MainForm
         Seat25.Name = "Seat25";
         Seat25.Size = new Size(55, 26);
         Seat25.TabIndex = 30;
-        Seat25.Text = "25";
+        Seat25.Text = "7A";
         Seat25.UseVisualStyleBackColor = false;
+        Seat25.Click += Seat1_Click;
         // 
         // Seat24
         // 
@@ -489,8 +509,9 @@ partial class MainForm
         Seat24.Name = "Seat24";
         Seat24.Size = new Size(55, 26);
         Seat24.TabIndex = 29;
-        Seat24.Text = "24";
+        Seat24.Text = "6D";
         Seat24.UseVisualStyleBackColor = false;
+        Seat24.Click += Seat1_Click;
         // 
         // Seat23
         // 
@@ -500,8 +521,9 @@ partial class MainForm
         Seat23.Name = "Seat23";
         Seat23.Size = new Size(55, 26);
         Seat23.TabIndex = 28;
-        Seat23.Text = "23";
+        Seat23.Text = "6C";
         Seat23.UseVisualStyleBackColor = false;
+        Seat23.Click += Seat1_Click;
         // 
         // Seat22
         // 
@@ -511,8 +533,9 @@ partial class MainForm
         Seat22.Name = "Seat22";
         Seat22.Size = new Size(55, 26);
         Seat22.TabIndex = 26;
-        Seat22.Text = "22";
+        Seat22.Text = "6B";
         Seat22.UseVisualStyleBackColor = false;
+        Seat22.Click += Seat1_Click;
         // 
         // Seat21
         // 
@@ -522,8 +545,9 @@ partial class MainForm
         Seat21.Name = "Seat21";
         Seat21.Size = new Size(55, 26);
         Seat21.TabIndex = 25;
-        Seat21.Text = "21";
+        Seat21.Text = "6A";
         Seat21.UseVisualStyleBackColor = false;
+        Seat21.Click += Seat1_Click;
         // 
         // Seat20
         // 
@@ -533,8 +557,9 @@ partial class MainForm
         Seat20.Name = "Seat20";
         Seat20.Size = new Size(55, 26);
         Seat20.TabIndex = 24;
-        Seat20.Text = "20";
+        Seat20.Text = "5D";
         Seat20.UseVisualStyleBackColor = false;
+        Seat20.Click += Seat1_Click;
         // 
         // Seat19
         // 
@@ -544,8 +569,9 @@ partial class MainForm
         Seat19.Name = "Seat19";
         Seat19.Size = new Size(55, 26);
         Seat19.TabIndex = 23;
-        Seat19.Text = "19";
+        Seat19.Text = "5C";
         Seat19.UseVisualStyleBackColor = false;
+        Seat19.Click += Seat1_Click;
         // 
         // Seat18
         // 
@@ -555,8 +581,9 @@ partial class MainForm
         Seat18.Name = "Seat18";
         Seat18.Size = new Size(55, 26);
         Seat18.TabIndex = 21;
-        Seat18.Text = "18";
+        Seat18.Text = "5B";
         Seat18.UseVisualStyleBackColor = false;
+        Seat18.Click += Seat1_Click;
         // 
         // Seat17
         // 
@@ -566,8 +593,9 @@ partial class MainForm
         Seat17.Name = "Seat17";
         Seat17.Size = new Size(55, 26);
         Seat17.TabIndex = 20;
-        Seat17.Text = "17";
+        Seat17.Text = "5A";
         Seat17.UseVisualStyleBackColor = false;
+        Seat17.Click += Seat1_Click;
         // 
         // Seat16
         // 
@@ -577,8 +605,9 @@ partial class MainForm
         Seat16.Name = "Seat16";
         Seat16.Size = new Size(55, 26);
         Seat16.TabIndex = 19;
-        Seat16.Text = "16";
+        Seat16.Text = "4D";
         Seat16.UseVisualStyleBackColor = false;
+        Seat16.Click += Seat1_Click;
         // 
         // Seat15
         // 
@@ -588,8 +617,9 @@ partial class MainForm
         Seat15.Name = "Seat15";
         Seat15.Size = new Size(55, 26);
         Seat15.TabIndex = 18;
-        Seat15.Text = "15";
+        Seat15.Text = "4C";
         Seat15.UseVisualStyleBackColor = false;
+        Seat15.Click += Seat1_Click;
         // 
         // Seat14
         // 
@@ -599,8 +629,9 @@ partial class MainForm
         Seat14.Name = "Seat14";
         Seat14.Size = new Size(55, 26);
         Seat14.TabIndex = 16;
-        Seat14.Text = "14";
+        Seat14.Text = "4B";
         Seat14.UseVisualStyleBackColor = false;
+        Seat14.Click += Seat1_Click;
         // 
         // Seat13
         // 
@@ -610,8 +641,9 @@ partial class MainForm
         Seat13.Name = "Seat13";
         Seat13.Size = new Size(55, 26);
         Seat13.TabIndex = 15;
-        Seat13.Text = "13";
+        Seat13.Text = "4A";
         Seat13.UseVisualStyleBackColor = false;
+        Seat13.Click += Seat1_Click;
         // 
         // Seat12
         // 
@@ -621,8 +653,9 @@ partial class MainForm
         Seat12.Name = "Seat12";
         Seat12.Size = new Size(55, 26);
         Seat12.TabIndex = 14;
-        Seat12.Text = "12";
+        Seat12.Text = "3D";
         Seat12.UseVisualStyleBackColor = false;
+        Seat12.Click += Seat1_Click;
         // 
         // Seat11
         // 
@@ -632,8 +665,9 @@ partial class MainForm
         Seat11.Name = "Seat11";
         Seat11.Size = new Size(55, 26);
         Seat11.TabIndex = 13;
-        Seat11.Text = "11";
+        Seat11.Text = "3C";
         Seat11.UseVisualStyleBackColor = false;
+        Seat11.Click += Seat1_Click;
         // 
         // Seat10
         // 
@@ -643,8 +677,9 @@ partial class MainForm
         Seat10.Name = "Seat10";
         Seat10.Size = new Size(55, 26);
         Seat10.TabIndex = 11;
-        Seat10.Text = "10";
+        Seat10.Text = "3B";
         Seat10.UseVisualStyleBackColor = false;
+        Seat10.Click += Seat1_Click;
         // 
         // Seat9
         // 
@@ -654,8 +689,9 @@ partial class MainForm
         Seat9.Name = "Seat9";
         Seat9.Size = new Size(55, 26);
         Seat9.TabIndex = 10;
-        Seat9.Text = "9";
+        Seat9.Text = "3A";
         Seat9.UseVisualStyleBackColor = false;
+        Seat9.Click += Seat1_Click;
         // 
         // Seat8
         // 
@@ -665,8 +701,9 @@ partial class MainForm
         Seat8.Name = "Seat8";
         Seat8.Size = new Size(55, 26);
         Seat8.TabIndex = 9;
-        Seat8.Text = "8";
+        Seat8.Text = "2D";
         Seat8.UseVisualStyleBackColor = false;
+        Seat8.Click += Seat1_Click;
         // 
         // Seat7
         // 
@@ -676,8 +713,9 @@ partial class MainForm
         Seat7.Name = "Seat7";
         Seat7.Size = new Size(55, 26);
         Seat7.TabIndex = 8;
-        Seat7.Text = "7";
+        Seat7.Text = "2C";
         Seat7.UseVisualStyleBackColor = false;
+        Seat7.Click += Seat1_Click;
         // 
         // Seat6
         // 
@@ -687,8 +725,9 @@ partial class MainForm
         Seat6.Name = "Seat6";
         Seat6.Size = new Size(55, 26);
         Seat6.TabIndex = 6;
-        Seat6.Text = "6";
+        Seat6.Text = "2B";
         Seat6.UseVisualStyleBackColor = false;
+        Seat6.Click += Seat1_Click;
         // 
         // Seat5
         // 
@@ -698,8 +737,9 @@ partial class MainForm
         Seat5.Name = "Seat5";
         Seat5.Size = new Size(55, 26);
         Seat5.TabIndex = 5;
-        Seat5.Text = "5";
+        Seat5.Text = "2A";
         Seat5.UseVisualStyleBackColor = false;
+        Seat5.Click += Seat1_Click;
         // 
         // Seat4
         // 
@@ -709,8 +749,9 @@ partial class MainForm
         Seat4.Name = "Seat4";
         Seat4.Size = new Size(55, 26);
         Seat4.TabIndex = 4;
-        Seat4.Text = "4";
+        Seat4.Text = "1D";
         Seat4.UseVisualStyleBackColor = false;
+        Seat4.Click += Seat1_Click;
         // 
         // Seat3
         // 
@@ -720,8 +761,9 @@ partial class MainForm
         Seat3.Name = "Seat3";
         Seat3.Size = new Size(55, 26);
         Seat3.TabIndex = 3;
-        Seat3.Text = "3";
+        Seat3.Text = "1C";
         Seat3.UseVisualStyleBackColor = false;
+        Seat3.Click += Seat1_Click;
         // 
         // Seat2
         // 
@@ -731,8 +773,9 @@ partial class MainForm
         Seat2.Name = "Seat2";
         Seat2.Size = new Size(55, 26);
         Seat2.TabIndex = 1;
-        Seat2.Text = "2";
+        Seat2.Text = "1B";
         Seat2.UseVisualStyleBackColor = false;
+        Seat2.Click += Seat1_Click;
         // 
         // Seat1
         // 
@@ -742,8 +785,9 @@ partial class MainForm
         Seat1.Name = "Seat1";
         Seat1.Size = new Size(55, 26);
         Seat1.TabIndex = 0;
-        Seat1.Text = "1";
+        Seat1.Text = "1A";
         Seat1.UseVisualStyleBackColor = false;
+        Seat1.Click += Seat1_Click;
         // 
         // MainForm
         // 
@@ -771,7 +815,7 @@ partial class MainForm
     private TableLayoutPanel SearchTableLayout;
     private TextBox SearchTextBox;
     private Button SearchButton;
-    private FlowLayoutPanel ResultPassenger;
+    private FlowLayoutPanel ResultPassengerFlowPanel;
     private TableLayoutPanel ButtonTable;
     private Button PrintButton;
     private Button CheckButton;

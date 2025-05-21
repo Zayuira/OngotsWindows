@@ -11,7 +11,7 @@ namespace FlightLibrary.DTO
             public int Id { get; set; }
             public string PassportNumber { get; set; } = "";
             public string Name { get; set; } = "";
-            public string? SeatCode { get; set; } // Seat.Code
+            public string? SeatCode { get; set; } 
             public string FlightNumber { get; set; } = "";
         }
 

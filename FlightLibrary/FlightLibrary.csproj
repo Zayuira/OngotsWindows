@@ -7,7 +7,21 @@
   </PropertyGroup>
 
   <ItemGroup>
+<<<<<<< HEAD
     <Folder Include="Model\" />
+=======
+    <Compile Remove="Flight\**" />
+    <EmbeddedResource Remove="Flight\**" />
+    <None Remove="Flight\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Interface\" />
+>>>>>>> 939ce19b84bbaeaf368d924c52a93dcc189bc70a
   </ItemGroup>
 
 </Project>
