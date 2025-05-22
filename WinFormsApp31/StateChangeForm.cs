@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Text;
+using System.Text.Json;
 using System.Windows.Forms;
+using FlightLibrary.DTO;
 using Microsoft.AspNetCore.SignalR.Client;
 
 namespace WinFormsApp31
@@ -64,22 +67,29 @@ namespace WinFormsApp31
 
         private async void button2_Click(object sender, EventArgs e)
         {
-            if (_hubConnection == null || _hubConnection.State != HubConnectionState.Connected)
-            {
-                MessageBox.Show("Hub-д холбогдоогүй байна!", "Анхааруулга", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
-            string flightNumber = textBox_FlightNumber.Text;
+            // SignalR-ээр биш, API-ээр шинэчилнэ!
+            int flightId = int.Parse(textBox_FlightNumber.Text);
             string status = comboBox_Status.SelectedItem?.ToString() ?? "Тодорхойгүй";
 
-            try
+            var req = new UpdateFlightStatusRequest
             {
-                await _hubConnection.InvokeAsync("SendFlightStatus", flightNumber, status);
+                FlightId = flightId,
+                NewStatus = status
+            };
+            string apiUrl = "http://localhost:5000/api/flightinfo/status";
+
+            using var client = new HttpClient();
+            var json = JsonSerializer.Serialize(req);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var response = await client.PutAsync(apiUrl, content);
+            if (response.IsSuccessStatusCode)
+            {
+                MessageBox.Show("Төлөв амжилттай шинэчлэгдлээ.");
             }
-            catch (Exception ex)
+            else
             {
-                MessageBox.Show($"Мэдээлэл илгээхэд алдаа гарлаа: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Шинэчлэхэд алдаа гарлаа: " + await response.Content.ReadAsStringAsync());
             }
         }
 

@@ -1,5 +1,4 @@
-﻿
-@page "/flightstatusdisplay"
+﻿@page "/flightstatusdisplay"
 @using Microsoft.AspNetCore.SignalR.Client
 @using FlightLibrary.Model
 @implements IAsyncDisposable
@@ -40,8 +39,8 @@ else
                     </td>
                     <td>@flight.Origin</td>
                     <td>@flight.Destination</td>
-                    <td>@flight.DepartureTime.ToString("g")</td>
-                    <td>@flight.ArrivalTime.ToString("g")</td>
+                    <td>@flight.DepartureDateTime.ToString("g")</td>
+                    <td>@flight.ArrivalDateTime.ToString("g")</td>
                 </tr>
             }
         </tbody>
@@ -78,79 +77,74 @@ else
     }
 
     body {
-        background-color: #121212;
-        color: #f1f1f1;
+        background-color: #161b22;
+        color: #f0f6fc;
     }
 
     .badge {
         font-size: 1rem;
-        padding: 0.5em 1em;
-        border-radius: 1rem;
+        padding: 0.5em 1.5em;
+        border-radius: 2em;
+        font-weight: 600;
+        letter-spacing: 0.03em;
+        box-shadow: 0 2px 8px rgba(40, 40, 40, 0.15);
+        border: none;
+        transition: box-shadow 0.2s, transform 0.2s;
+        display: inline-block;
     }
 
-    .badge-ontime {
-        background-color: #28a745;
-    }
-
-    .badge-delayed {
-        background-color: #dc3545;
+    .badge-checkin {
+        background: linear-gradient(90deg, #5eead4 0%, #2dd4bf 100%);
+        color: #033a38;
+        border: 1.5px solid #1de9b6;
     }
 
     .badge-boarding {
-        background-color: #ffc107;
-        color: black;
+        background: linear-gradient(90deg, #ffe259 0%, #ffa751 100%);
+        color: #443104;
+        border: 1.5px solid #ffbb33;
+    }
+
+    .badge-departed {
+        background: linear-gradient(90deg, #00c6fb 0%, #005bea 100%);
+        color: #fff;
+        border: 1.5px solid #00c6fb;
+    }
+
+    .badge-delayed {
+        background: linear-gradient(90deg, #f85032 0%, #e73827 100%);
+        color: #fff;
+        border: 1.5px solid #e73827;
     }
 
     .badge-cancelled {
-        background-color: #6c757d;
+        background: linear-gradient(90deg, #757f9a 0%, #d7dde8 100%);
+        color: #471818;
+        border: 1.5px solid #757f9a;
+        text-decoration: line-through;
+    }
+
+    .badge-secondary {
+        background: linear-gradient(90deg, #a1c4fd 0%, #c2e9fb 100%);
+        color: #0d153a;
+        border: 1.5px solid #a1c4fd;
+    }
+
+    .badge:hover, .badge:focus {
+        box-shadow: 0 4px 20px rgba(0,0,0,0.20), 0 1.5px 4px rgba(80,80,80,0.08);
+        transform: scale(1.06);
+        cursor: pointer;
     }
 </style>
 
 @code {
     private HubConnection? hubConnection;
-
-    private List<FlightInfo> flights = new()
-    {
-        new FlightInfo
-        {
-            FlightNumber = "AA123",
-            Status = "On Time",
-            Origin = "JFK",
-            Destination = "LAX",
-            DepartureTime = DateTime.Now.AddHours(1),
-            ArrivalTime = DateTime.Now.AddHours(6)
-        },
-        new FlightInfo
-        {
-            FlightNumber = "DL456",
-            Status = "Delayed",
-            Origin = "ATL",
-            Destination = "ORD",
-            DepartureTime = DateTime.Now.AddMinutes(30),
-            ArrivalTime = DateTime.Now.AddHours(2)
-        },
-		new FlightInfo
-		{
-			FlightNumber = "SW789",
-			Status = "Cancelled",
-			Origin = "BOS",
-			Destination = "MIA",
-			DepartureTime = DateTime.Now.AddHours(2),
-			ArrivalTime = DateTime.Now.AddHours(5)
-		},
-        new FlightInfo
-        {
-            FlightNumber = "UA789",
-            Status = "Boarding",
-            Origin = "SFO",
-            Destination = "SEA",
-            DepartureTime = DateTime.Now.AddMinutes(10),
-            ArrivalTime = DateTime.Now.AddHours(2)
-        }
-    };
+    private List<FlightInfo> flights = new();
 
     protected override async Task OnInitializedAsync()
     {
+        await LoadFlightsAsync();
+
         hubConnection = new HubConnectionBuilder()
             .WithUrl(NavigationManager.ToAbsoluteUri("http://localhost:5000/flightstatushub"))
             .WithAutomaticReconnect()
@@ -169,12 +163,37 @@ else
         await hubConnection.StartAsync();
     }
 
-    private string GetStatusClass(string status) => status.ToLower() switch
+    private async Task LoadFlightsAsync()
     {
-        "on time" => "badge-ontime",
-        "delayed" => "badge-delayed",
-        "boarding" => "badge-boarding",
-        "cancelled" => "badge-cancelled",
+        try
+        {
+            var http = new HttpClient();
+            var uri = NavigationManager.ToAbsoluteUri("http://localhost:5000/api/flightinfo");
+            var response = await http.GetAsync(uri);
+            if (response.IsSuccessStatusCode)
+            {
+                var json = await response.Content.ReadAsStringAsync();
+                var data = System.Text.Json.JsonSerializer.Deserialize<List<FlightInfo>>(json, new System.Text.Json.JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
+                    });
+                if (data != null)
+                    flights = data;
+            }
+        }
+        catch (Exception ex)
+        {
+            // Optionally: лог хийх эсвэл хэрэглэгчид мэдээлэх
+        }
+    }
+
+    private string GetStatusClass(string status) => status.Trim().ToLower() switch
+    {
+        "бүртгэж байна" => "badge-checkin",
+        "онгоцонд сууж байна" => "badge-boarding",
+        "ниссэн" => "badge-departed",
+        "хойшилсон" => "badge-delayed",
+        "цуцалсан" => "badge-cancelled",
         _ => "badge-secondary"
     };
 

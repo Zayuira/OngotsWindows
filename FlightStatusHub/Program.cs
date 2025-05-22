@@ -28,7 +28,7 @@ namespace FlightStatusHub
             builder.Services.AddScoped<IPassengerRepository, PassengerRepository>();
 
             builder.Services.AddScoped<IPassengerService, PassengerService>();
-
+            builder.Services.AddScoped<IFlightInfoRepository, FlightInfoRepository>();
             // Hosted service, controllers, CORS
             builder.Services.AddHostedService<Worker>();
             builder.Services.AddControllers();

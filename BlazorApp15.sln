@@ -8,8 +8,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorApp15", "BlazorFlight
 		{5DBF0C8A-70BD-484E-8D9E-5C329E925C6F} = {5DBF0C8A-70BD-484E-8D9E-5C329E925C6F}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CalculatorLibrary", "CalculatorLibrary\CalculatorLibrary.csproj", "{796D5221-AB06-D7D8-9838-940E3DB7559E}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinFormsApp31", "WinFormsApp31\WinFormsApp31.csproj", "{65784129-9E3D-4010-95C8-9FAE27E4BC2C}"
 	ProjectSection(ProjectDependencies) = postProject
 		{5DBF0C8A-70BD-484E-8D9E-5C329E925C6F} = {5DBF0C8A-70BD-484E-8D9E-5C329E925C6F}
@@ -19,8 +17,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlightStatusHub", "FlightStatusHub\FlightStatusHub.csproj", "{5DBF0C8A-70BD-484E-8D9E-5C329E925C6F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlightLibrary", "FlightLibrary\FlightLibrary.csproj", "{8E6A0A43-16B7-4432-8DAB-EA9E82F1D8C7}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlightAPI", "FlightAPI\FlightAPI.csproj", "{A6CEB1EA-7A89-4A54-9CCC-54156448A9C6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -32,10 +28,6 @@ Global
 		{D17CDA33-B721-4D97-AF6D-A2502D12322D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D17CDA33-B721-4D97-AF6D-A2502D12322D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D17CDA33-B721-4D97-AF6D-A2502D12322D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{796D5221-AB06-D7D8-9838-940E3DB7559E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{796D5221-AB06-D7D8-9838-940E3DB7559E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{796D5221-AB06-D7D8-9838-940E3DB7559E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{796D5221-AB06-D7D8-9838-940E3DB7559E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{65784129-9E3D-4010-95C8-9FAE27E4BC2C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{65784129-9E3D-4010-95C8-9FAE27E4BC2C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{65784129-9E3D-4010-95C8-9FAE27E4BC2C}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -48,10 +40,6 @@ Global
 		{8E6A0A43-16B7-4432-8DAB-EA9E82F1D8C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8E6A0A43-16B7-4432-8DAB-EA9E82F1D8C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8E6A0A43-16B7-4432-8DAB-EA9E82F1D8C7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A6CEB1EA-7A89-4A54-9CCC-54156448A9C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A6CEB1EA-7A89-4A54-9CCC-54156448A9C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A6CEB1EA-7A89-4A54-9CCC-54156448A9C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A6CEB1EA-7A89-4A54-9CCC-54156448A9C6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
