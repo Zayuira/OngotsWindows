@@ -9,17 +9,20 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using FlightLibrary.DTO;
+using FlightLibrary.Model;
 
 namespace WinFormsApp31
 {
     public partial class Form1 : Form
     {
         private PassengerDto PassengerDto;
+        private FlightInfo FlightInfo;
         private PrintDocument printDocument = new PrintDocument();
-        public Form1(PassengerDto passengerDto)
+        public Form1(PassengerDto passengerDto, FlightInfo flightinfo)
         {
             InitializeComponent();
             PassengerDto = passengerDto ?? new PassengerDto();
+            FlightInfo = flightinfo ?? new FlightInfo();
             setData();
         }
 
@@ -78,15 +81,15 @@ namespace WinFormsApp31
             top += rowHeight * 2;
 
             g.DrawString("FROM", labelFont, blackBrush, col1X, top);
-            g.DrawString("COUNTRY A", valueFont, blackBrush, col1X, top + 15);
+            g.DrawString(FlightInfo.Origin, valueFont, blackBrush, col1X, top + 15);
 
             g.DrawString("TO", labelFont, blackBrush, col2X, top);
-            g.DrawString("COUNTRY B", valueFont, blackBrush, col2X, top + 15);
+            g.DrawString(FlightInfo.Destination, valueFont, blackBrush, col2X, top + 15);
 
             top += rowHeight * 2;
 
             g.DrawString("GATE", labelFont, blackBrush, col1X, top);
-            g.DrawString("A01", valueFont, blackBrush, col1X, top + 15);
+            g.DrawString(FlightInfo.FlightNumber, valueFont, blackBrush, col1X, top + 15);
 
             g.DrawString("SEAT", labelFont, blackBrush, col2X, top);
             g.DrawString(PassengerDto.SeatCode ?? "N/A", valueFont, blackBrush, col2X, top + 15);
@@ -94,7 +97,7 @@ namespace WinFormsApp31
             top += rowHeight * 2;
 
             g.DrawString("BOARDING TIME", labelFont, blackBrush, col1X, top);
-            g.DrawString("01:00", valueFont, blackBrush, col1X, top + 15);
+            g.DrawString(FlightInfo.DepartureTime, valueFont, blackBrush, col1X, top + 15);
 
             g.DrawString("DATE", labelFont, blackBrush, col2X, top);
             g.DrawString(DateTime.Now.ToString("dd MMMM yyyy").ToUpper(), valueFont, blackBrush, col2X, top + 15);

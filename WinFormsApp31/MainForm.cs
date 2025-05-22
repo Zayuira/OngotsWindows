@@ -2,6 +2,7 @@
 using System.Text.Json;
 using FlightLibrary;
 using FlightLibrary.DTO;
+using FlightLibrary.Model;
 using Microsoft.AspNetCore.SignalR.Client;
 
 namespace WinFormsApp31;
@@ -14,6 +15,7 @@ public partial class MainForm : Form
     List<FlightDtos> flightDtos = new List<FlightDtos>();
 
     private PassengerDto? passengerDto;
+    private FlightInfo flightInfo;
     private Button? selectedSeatButton = null;
     private string? selectedSeatNumber = null;
     private FlightDtos? currentFlightDto = null;
@@ -22,7 +24,9 @@ public partial class MainForm : Form
     {
         InitializeComponent();
         passengerDto = new PassengerDto();
+        flightInfo = new FlightInfo();
         AddFlightListFlowPanel();
+        InitSignalRAsync();
       
     }
 
@@ -57,7 +61,25 @@ public partial class MainForm : Form
             }
         }
     }
+    private async Task InitSignalRAsync()
+    {
+        _hubConnection = new HubConnectionBuilder()
+            .WithUrl("http://localhost:5000/flightstatushub")
+            .WithAutomaticReconnect()
+            .Build();
 
+        _hubConnection.On<string, string>("ReceiveFlightStatus", (flightNumber, status) =>
+        {
+            var flight = flightDtos.FirstOrDefault(f => f.Number == flightNumber);
+            if (flight != null)
+            {
+                flight.Status = status;
+                Invoke((MethodInvoker)delegate { AddFlightListFlowPanel(); });
+            }
+        });
+
+        await _hubConnection.StartAsync();
+    }
     private void AddFlightListFlowPanel()
     {
         FlightListFlowPanel.Controls.Clear();
@@ -141,7 +163,7 @@ public partial class MainForm : Form
         try
         {
             CheckButton.Enabled = true;
-           
+            PrintButton.Enabled = true;
             ResultPassengerFlowPanel.Controls.Clear();
             FlightListFlowPanel.Controls.Clear();
 
@@ -150,6 +172,7 @@ public partial class MainForm : Form
             if (string.IsNullOrEmpty(searchPassport))
             {
                 MessageBox.Show("Паспортын дугаараа оруулна уу.");
+                tableLayoutPanel1.Visible = false;
                 AddFlightListFlowPanel();
                 return;
             }
@@ -172,11 +195,14 @@ public partial class MainForm : Form
                 if (passengerDto.SeatCode != null)
                 {
                     CheckButton.Enabled = false;
+                    PrintButton.Enabled = true;
                     CheckButton.BackColor = SystemColors.Control;
                 }
                 else
                 {
                     CheckButton.Enabled = true ;
+                    PrintButton.Enabled = false;
+                    PrintButton.BackColor = SystemColors.Control;
                 }
                 if (passengerFlight != null)
                 {
@@ -192,6 +218,7 @@ public partial class MainForm : Form
             }
             else
             {
+                tableLayoutPanel1.Visible = false;
                 CreateNotFoundPanel();
                 DrawNoFlightPanel();
             }
@@ -380,12 +407,20 @@ public partial class MainForm : Form
 
     private void PrintButton_Click(object sender, EventArgs e)
     {
+        if (flightDtos.Count > 0)
+        {
+           
+        }
+        else
+        {
+            MessageBox.Show("Нислэгийн мэдээлэл олдоогүй!!!");
+        }
         if (passengerDto == null)
         {
             MessageBox.Show("Зорчигчийн мэдээлэл олдсонгүй!");
             return;
         }
-        using (var printForm = new Form1(passengerDto))
+        using (var printForm = new Form1(passengerDto, flightInfo))
         {
             printForm.ShowDialog();
         }
@@ -455,7 +490,8 @@ public partial class MainForm : Form
             if (response.IsSuccessStatusCode)
             {
                 MessageBox.Show("Суудлыг амжилттай шинэчиллээ.");
-                await LoadFlightsFromApiAsync(); // Refresh data
+                await LoadFlightsFromApiAsync();
+                //await InitSignalRAsync();// Refresh data
             
             }
             

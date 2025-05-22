@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FlightLibrary.Model;
 
 namespace FlightLibrary.DTO
 {
@@ -19,6 +20,7 @@ namespace FlightLibrary.DTO
         public List<PassengerDto> Passengers { get; set; } = new();
 
         public int PassengersCount => Passengers.Count;
+      
     }
 
 }

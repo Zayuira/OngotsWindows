@@ -71,17 +71,41 @@ public class FlightInfoRepository : IFlightInfoRepository
 
         return result;
     }
+    //public async Task<bool> UpdateFlightStatusAsync(int flightId, string newStatus)
+    //{
+    //    using var conn = new SqliteConnection(_connectionString);
+    //    await conn.OpenAsync();
+    //    var cmd = conn.CreateCommand();
+    //    cmd.CommandText = @"UPDATE FlightInformation SET Status = @status WHERE FlightId = @id";
+    //    cmd.Parameters.AddWithValue("@status", newStatus);
+    //    cmd.Parameters.AddWithValue("@id", flightId);
+
+    //    int affected = await cmd.ExecuteNonQueryAsync();
+    //    return affected > 0;
+    //}
     public async Task<bool> UpdateFlightStatusAsync(int flightId, string newStatus)
     {
         using var conn = new SqliteConnection(_connectionString);
         await conn.OpenAsync();
-        var cmd = conn.CreateCommand();
-        cmd.CommandText = @"UPDATE FlightInformation SET Status = @status WHERE FlightId = @id";
-        cmd.Parameters.AddWithValue("@status", newStatus);
-        cmd.Parameters.AddWithValue("@id", flightId);
 
-        int affected = await cmd.ExecuteNonQueryAsync();
-        return affected > 0;
+        // 1. FlightInformation хүснэгтийн Status-ийг шинэчлэнэ
+        var cmd1 = conn.CreateCommand();
+        cmd1.CommandText = @"UPDATE FlightInformation SET Status = @status WHERE FlightId = @id";
+        cmd1.Parameters.AddWithValue("@status", newStatus);
+        cmd1.Parameters.AddWithValue("@id", flightId);
+        int affected1 = await cmd1.ExecuteNonQueryAsync();
+
+        // 2. FlightStatusEnum индексийг ол (enum-ыг string-ээс int рүү хөрвүүлнэ)
+        int statusIndex = GetFlightStatusEnumIndex(newStatus);
+
+        // 3. Flight хүснэгтийн Status баганын утгыг шинэчил
+        var cmd2 = conn.CreateCommand();
+        cmd2.CommandText = @"UPDATE Flight SET Status = @statusIndex WHERE Id = @id";
+        cmd2.Parameters.AddWithValue("@statusIndex", statusIndex);
+        cmd2.Parameters.AddWithValue("@id", flightId);
+        int affected2 = await cmd2.ExecuteNonQueryAsync();
+
+        return affected1 > 0 && affected2 > 0;
     }
     public async Task<FlightInfo> GetByFlightIdAsync(int flightId)
     {
@@ -109,5 +133,17 @@ public class FlightInfoRepository : IFlightInfoRepository
             };
         }
         return null;
+    }
+    private int GetFlightStatusEnumIndex(string status)
+    {
+        return status.ToLower() switch
+        {
+            "registering" or "бүртгэж байна" => 0,
+            "boarding" or "онгоцонд сууж байна" => 1,
+            "departed" or "ниссэн" => 2,
+            "delayed" or "хойшилсон" => 3,
+            "cancelled" or "цуцалсан" => 4,
+            _ => 0
+        };
     }
 }
