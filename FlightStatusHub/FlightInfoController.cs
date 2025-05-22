@@ -30,22 +30,40 @@ public class FlightInfoController : ControllerBase
         return Ok(data);
     }
 
+    //[HttpPut("status")]
+    //public async Task<IActionResult> UpdateStatus([FromBody] UpdateFlightStatusRequest req)
+    //{
+    //    // 1. Өгөгдлийн сан дахь нислэгийн төлөвийг шинэчилнэ
+    //    bool result = await _repository.UpdateFlightStatusAsync(req.FlightId, req.NewStatus);
+    //    if (!result)
+    //        return NotFound();
+
+    //    // 2. Шинэчилсэн нислэгийн мэдээллийг авна
+    //    var allFlights = await _repository.GetAllAsync();
+    //    var updatedFlight = allFlights.FirstOrDefault(f => f.FlightNumber == req.FlightId.ToString());
+    //    // FlightId-г FlightNumber-тэй тааруулах бол өөрчлөлт хийж болно
+
+    //    // 3. SignalR-ээр шинэ статусыг бүх клиент рүү push хийнэ
+    //    if (updatedFlight != null)
+    //    {
+    //        await _hubContext.Clients.All.SendAsync("ReceiveFlightStatus", updatedFlight.FlightNumber, updatedFlight.Status);
+    //    }
+
+    //    return Ok();
+    //}
     [HttpPut("status")]
     public async Task<IActionResult> UpdateStatus([FromBody] UpdateFlightStatusRequest req)
     {
-        // 1. Өгөгдлийн сан дахь нислэгийн төлөвийг шинэчилнэ
         bool result = await _repository.UpdateFlightStatusAsync(req.FlightId, req.NewStatus);
         if (!result)
             return NotFound();
 
-        // 2. Шинэчилсэн нислэгийн мэдээллийг авна
-        var allFlights = await _repository.GetAllAsync();
-        var updatedFlight = allFlights.FirstOrDefault(f => f.FlightNumber == req.FlightId.ToString());
-        // FlightId-г FlightNumber-тэй тааруулах бол өөрчлөлт хийж болно
+        // FlightId-аар FlightInfo-г шууд авна
+        var updatedFlight = await _repository.GetByFlightIdAsync(req.FlightId);
 
-        // 3. SignalR-ээр шинэ статусыг бүх клиент рүү push хийнэ
         if (updatedFlight != null)
         {
+            // FlightNumber болон Status-г SignalR-ээр илгээ
             await _hubContext.Clients.All.SendAsync("ReceiveFlightStatus", updatedFlight.FlightNumber, updatedFlight.Status);
         }
 

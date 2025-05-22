@@ -8,4 +8,5 @@ public interface IFlightInfoRepository
 {
     Task<List<FlightInfo>> GetAllAsync();
     Task<bool> UpdateFlightStatusAsync(int flightId, string newStatus);
+    Task<FlightInfo> GetByFlightIdAsync(int flightId);
 }

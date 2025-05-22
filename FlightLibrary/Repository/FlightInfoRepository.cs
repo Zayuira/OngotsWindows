@@ -83,4 +83,31 @@ public class FlightInfoRepository : IFlightInfoRepository
         int affected = await cmd.ExecuteNonQueryAsync();
         return affected > 0;
     }
+    public async Task<FlightInfo> GetByFlightIdAsync(int flightId)
+    {
+        using var conn = new SqliteConnection(_connectionString);
+        await conn.OpenAsync();
+        var cmd = conn.CreateCommand();
+        cmd.CommandText = @"SELECT Flight.Number, FI.Status, FI.Origin, FI.Destination, 
+                               FI.DepartureTime, FI.ArrivalTime
+                        FROM FlightInformation FI
+                        JOIN Flight ON FI.FlightId = Flight.Id
+                        WHERE FI.FlightId = @fid";
+        cmd.Parameters.AddWithValue("@fid", flightId);
+
+        using var reader = await cmd.ExecuteReaderAsync();
+        if (await reader.ReadAsync())
+        {
+            return new FlightInfo
+            {
+                FlightNumber = reader.GetString(0),
+                Status = reader.GetString(1),
+                Origin = reader.GetString(2),
+                Destination = reader.GetString(3),
+                DepartureTime = reader.GetString(4),
+                ArrivalTime = reader.GetString(5)
+            };
+        }
+        return null;
+    }
 }

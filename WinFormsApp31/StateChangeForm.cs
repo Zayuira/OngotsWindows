@@ -96,11 +96,11 @@ namespace WinFormsApp31
         private void StateChangeForm_Load(object sender, EventArgs e)
         {
             comboBox_Status.Items.Clear();
-            comboBox_Status.Items.Add("Бүртгэж байна");
-            comboBox_Status.Items.Add("Онгоцонд сууж байна");
-            comboBox_Status.Items.Add("Ниссэн");
-            comboBox_Status.Items.Add("Хойшилсон");
-            comboBox_Status.Items.Add("Цуцалсан");
+            comboBox_Status.Items.Add("Registering");
+            comboBox_Status.Items.Add("Boarding");
+            comboBox_Status.Items.Add("Departed");
+            comboBox_Status.Items.Add("Delayed");
+            comboBox_Status.Items.Add("Cancelled");
             comboBox_Status.SelectedIndex = 0;
 
             textBox_HubURL.Text = _defaultHubUrl;

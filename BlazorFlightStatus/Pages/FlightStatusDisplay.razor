@@ -19,6 +19,7 @@ else
     <table class="table table-hover table-bordered flight-table">
         <thead class="table-dark">
             <tr>
+                <th>Id</th>
                 <th>Flight</th>
                 <th>Status</th>
                 <th>From</th>
@@ -28,13 +29,16 @@ else
             </tr>
         </thead>
         <tbody>
-            @foreach (var flight in flights)
-            {
+
+                @for (int i = 0; i < flights.Count; i++)
+                {
+                    var flight = flights[i];
                 <tr>
+                    <td>@(i + 1)</td> 
                     <td>@flight.FlightNumber</td>
                     <td>
                         <span class="badge @GetStatusClass(flight.Status)">
-                            @flight.Status
+                                @flight.Status
                         </span>
                     </td>
                     <td>@flight.Origin</td>
@@ -42,8 +46,9 @@ else
                     <td>@flight.DepartureDateTime.ToString("g")</td>
                     <td>@flight.ArrivalDateTime.ToString("g")</td>
                 </tr>
-            }
+                }
         </tbody>
+
     </table>
 }
 
@@ -189,11 +194,11 @@ else
 
     private string GetStatusClass(string status) => status.Trim().ToLower() switch
     {
-        "бүртгэж байна" => "badge-checkin",
-        "онгоцонд сууж байна" => "badge-boarding",
-        "ниссэн" => "badge-departed",
-        "хойшилсон" => "badge-delayed",
-        "цуцалсан" => "badge-cancelled",
+        "registering" => "badge-checkin",
+        "boarding" => "badge-boarding",
+        "departed" => "badge-departed",
+        "delayed" => "badge-delayed",
+        "cancelled" => "badge-cancelled",
         _ => "badge-secondary"
     };
 
