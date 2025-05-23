@@ -8,6 +8,7 @@ namespace FlightLibrary.Model
 {
     public class FlightInfo
     {
+
         public string FlightNumber { get; set; } = string.Empty;
         public string Status { get; set; } = string.Empty;
         public string Origin { get; set; } = string.Empty;

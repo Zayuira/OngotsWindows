@@ -61,6 +61,33 @@ public partial class MainForm : Form
             }
         }
     }
+    private async Task<FlightInfo?> GetFlightInfoByNumberAsync(string flightNumber)
+    {
+        
+        
+        string apiUrl = $"http://localhost:5000/api/flightinfo/byNumber?flightNumber={flightNumber}";
+        using (HttpClient client = new HttpClient())
+        {
+            try
+            {
+                var response = await client.GetAsync(apiUrl);
+                response.EnsureSuccessStatusCode();
+
+                string json = await response.Content.ReadAsStringAsync();
+                var flightInfo = JsonSerializer.Deserialize<FlightInfo>(json, new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                });
+                //MessageBox.Show("Нислэгийн мэдээлэл олдсон");
+                return flightInfo;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Нислэгийн дэлгэрэнгүй мэдээлэл авах үед алдаа: " + ex.Message);
+                return null;
+            }
+        }
+    }
     private async Task InitSignalRAsync()
     {
         _hubConnection = new HubConnectionBuilder()
@@ -184,14 +211,13 @@ public partial class MainForm : Form
                 p.PassportNumber.Equals(searchPassport, StringComparison.OrdinalIgnoreCase));
             
             passengerDto = foundPassenger;
-            //MessageBox.Show($"{passengerDto.PassportNumber}");
             if (foundPassenger != null)
             {
                 var passengerFlight = flightDtos.FirstOrDefault(f =>
                     f.Passengers.Any(p =>
                         !string.IsNullOrEmpty(p.PassportNumber) &&
                         p.PassportNumber.Equals(searchPassport, StringComparison.OrdinalIgnoreCase)));
-                
+                currentFlightDto = passengerFlight;
                 if (passengerDto.SeatCode != null)
                 {
                     CheckButton.Enabled = false;
@@ -405,27 +431,31 @@ public partial class MainForm : Form
         ResultPassengerFlowPanel.Controls.Add(notFoundPanel);
     }
 
-    private void PrintButton_Click(object sender, EventArgs e)
+    private async void PrintButton_Click(object sender, EventArgs e)
     {
-        if (flightDtos.Count > 0)
+        if (currentFlightDto == null)
         {
-           
-        }
-        else
-        {
-            MessageBox.Show("Нислэгийн мэдээлэл олдоогүй!!!");
+            MessageBox.Show("Нислэг сонгогдоогүй байна!");
+            return;
         }
         if (passengerDto == null)
         {
             MessageBox.Show("Зорчигчийн мэдээлэл олдсонгүй!");
             return;
         }
-        using (var printForm = new Form1(passengerDto, flightInfo))
+
+        var info = await GetFlightInfoByNumberAsync(currentFlightDto.Number);
+        if (info == null)
+        {
+            MessageBox.Show("Нислэгийн дэлгэрэнгүй мэдээлэл олдсонгүй!");
+            return;
+        }
+
+        using (var printForm = new Form1(passengerDto, info))
         {
             printForm.ShowDialog();
         }
     }
-
     // Бүх суудлын button-д энэ handler-г онооно уу!
     private void Seat1_Click(object sender, EventArgs e)
     {
@@ -448,7 +478,7 @@ public partial class MainForm : Form
         if (seat != null)
         {
             passengerDto.SeatCode = seat.SeatNumber;
-            passengerDto.SeatId = seat.Id; // PassengerDto-д SeatId талбар байх ёстой!
+            passengerDto.SeatId = seat.Id; 
         }
 
         ResultPassengerFlowPanel.Controls.Clear();
@@ -510,9 +540,4 @@ public partial class MainForm : Form
             MessageBox.Show("Шинэчлэх үед алдаа гарлаа: " + ex.Message);
         }
     }
-
-
- 
-
-
 }

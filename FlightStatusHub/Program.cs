@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 using FlightLibrary.Model;
+using FlightLibrary.Services;
 
 namespace FlightStatusHub
 {
@@ -29,6 +30,8 @@ namespace FlightStatusHub
 
             builder.Services.AddScoped<IPassengerService, PassengerService>();
             builder.Services.AddScoped<IFlightInfoRepository, FlightInfoRepository>();
+            builder.Services.AddScoped<FlightInfoService>();
+            builder.Services.AddSingleton<SeatReservationQueueService>(); // Singleton байх ёстой!
             // Hosted service, controllers, CORS
             builder.Services.AddHostedService<Worker>();
             builder.Services.AddControllers();

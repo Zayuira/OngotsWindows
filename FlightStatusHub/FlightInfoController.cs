@@ -4,16 +4,22 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FlightLibrary.DTO;
+using FlightLibrary.Model;
+using FlightLibrary.Services;
+
+
 
 
 // FlightAPI/Controllers/FlightInfoController.cs
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.EntityFrameworkCore;
 
 [ApiController]
 [Route("api/[controller]")]
 public class FlightInfoController : ControllerBase
 {
+    private readonly FlightInfoService _service;
     private readonly IFlightInfoRepository _repository;
     private readonly IHubContext<FlightStatusHub.FlightStatusHub> _hubContext;
 
@@ -30,27 +36,7 @@ public class FlightInfoController : ControllerBase
         return Ok(data);
     }
 
-    //[HttpPut("status")]
-    //public async Task<IActionResult> UpdateStatus([FromBody] UpdateFlightStatusRequest req)
-    //{
-    //    // 1. Өгөгдлийн сан дахь нислэгийн төлөвийг шинэчилнэ
-    //    bool result = await _repository.UpdateFlightStatusAsync(req.FlightId, req.NewStatus);
-    //    if (!result)
-    //        return NotFound();
-
-    //    // 2. Шинэчилсэн нислэгийн мэдээллийг авна
-    //    var allFlights = await _repository.GetAllAsync();
-    //    var updatedFlight = allFlights.FirstOrDefault(f => f.FlightNumber == req.FlightId.ToString());
-    //    // FlightId-г FlightNumber-тэй тааруулах бол өөрчлөлт хийж болно
-
-    //    // 3. SignalR-ээр шинэ статусыг бүх клиент рүү push хийнэ
-    //    if (updatedFlight != null)
-    //    {
-    //        await _hubContext.Clients.All.SendAsync("ReceiveFlightStatus", updatedFlight.FlightNumber, updatedFlight.Status);
-    //    }
-
-    //    return Ok();
-    //}
+   
     [HttpPut("status")]
     public async Task<IActionResult> UpdateStatus([FromBody] UpdateFlightStatusRequest req)
     {
@@ -68,5 +54,19 @@ public class FlightInfoController : ControllerBase
         }
 
         return Ok();
+    }
+    [HttpGet("{flightId}")]
+    public async Task<IActionResult> GetById(int flightId)
+    {
+        var info = await _service.GetByFlightIdAsync(flightId);
+        if (info == null) return NotFound();
+        return Ok(info);
+    }
+    [HttpGet("byNumber")]
+    public async Task<IActionResult> GetByNumber([FromQuery] string flightNumber)
+    {
+        var info = await _repository.GetByFlightNumberAsync(flightNumber);
+        if (info == null) return NotFound();
+        return Ok(info);
     }
 }

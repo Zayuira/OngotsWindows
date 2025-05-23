@@ -10,7 +10,12 @@ using Microsoft.AspNetCore.Mvc;
 public class PassengerController : ControllerBase
 {
     private readonly IPassengerService _passengerService;
+    private readonly SeatReservationQueueService _queueService;
 
+    public PassengerController(SeatReservationQueueService queueService)
+    {
+        _queueService = queueService;
+    }
     public PassengerController(IPassengerService passengerService)
     {
         _passengerService = passengerService;
@@ -40,5 +45,15 @@ public class PassengerController : ControllerBase
             // Лог бичих боломжтой
             return StatusCode(500, "Internal server error: " + ex.Message);
         }
+    }
+   
+
+    [HttpPut("{id}/seat")]
+    public async Task<IActionResult> ReserveSeat(int id, [FromBody] ReserveSeatRequest req)
+    {
+        var result = await _queueService.EnqueueReservation(id, req.SeatId);
+        if (!result)
+            return Conflict("Суудал аль хэдийн захиалсан байна.");
+        return Ok();
     }
 }

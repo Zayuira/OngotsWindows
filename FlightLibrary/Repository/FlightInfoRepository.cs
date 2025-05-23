@@ -71,18 +71,7 @@ public class FlightInfoRepository : IFlightInfoRepository
 
         return result;
     }
-    //public async Task<bool> UpdateFlightStatusAsync(int flightId, string newStatus)
-    //{
-    //    using var conn = new SqliteConnection(_connectionString);
-    //    await conn.OpenAsync();
-    //    var cmd = conn.CreateCommand();
-    //    cmd.CommandText = @"UPDATE FlightInformation SET Status = @status WHERE FlightId = @id";
-    //    cmd.Parameters.AddWithValue("@status", newStatus);
-    //    cmd.Parameters.AddWithValue("@id", flightId);
-
-    //    int affected = await cmd.ExecuteNonQueryAsync();
-    //    return affected > 0;
-    //}
+ 
     public async Task<bool> UpdateFlightStatusAsync(int flightId, string newStatus)
     {
         using var conn = new SqliteConnection(_connectionString);
@@ -118,6 +107,33 @@ public class FlightInfoRepository : IFlightInfoRepository
                         JOIN Flight ON FI.FlightId = Flight.Id
                         WHERE FI.FlightId = @fid";
         cmd.Parameters.AddWithValue("@fid", flightId);
+
+        using var reader = await cmd.ExecuteReaderAsync();
+        if (await reader.ReadAsync())
+        {
+            return new FlightInfo
+            {
+                FlightNumber = reader.GetString(0),
+                Status = reader.GetString(1),
+                Origin = reader.GetString(2),
+                Destination = reader.GetString(3),
+                DepartureTime = reader.GetString(4),
+                ArrivalTime = reader.GetString(5)
+            };
+        }
+        return null;
+    }
+    public async Task<FlightInfo> GetByFlightNumberAsync(string flightNumber)
+    {
+        using var conn = new SqliteConnection(_connectionString);
+        await conn.OpenAsync();
+        var cmd = conn.CreateCommand();
+        cmd.CommandText = @"SELECT Flight.Number, FI.Status, FI.Origin, FI.Destination, 
+                               FI.DepartureTime, FI.ArrivalTime
+                        FROM FlightInformation FI
+                        JOIN Flight ON FI.FlightId = Flight.Id
+                        WHERE Flight.Number = @fnumber";
+        cmd.Parameters.AddWithValue("@fnumber", flightNumber);
 
         using var reader = await cmd.ExecuteReaderAsync();
         if (await reader.ReadAsync())

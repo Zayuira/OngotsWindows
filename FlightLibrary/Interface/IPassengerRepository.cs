@@ -10,5 +10,6 @@ public interface IPassengerRepository
     Task<Passenger?> GetPassengerByIdAsync(int id);
     Task UpdatePassengerAsync(Passenger passenger);
     Task<Seat?> GetSeatByIdAsync(int seatId); 
-    Task UpdateSeatAsync(Seat seat);          
+    Task UpdateSeatAsync(Seat seat);
+    Task<bool> ReserveSeatAsync(int passengerId, int seatId);
 }

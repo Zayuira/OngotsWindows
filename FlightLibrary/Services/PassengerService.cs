@@ -6,23 +6,6 @@ using System.Threading.Tasks;
 
 public class PassengerService : IPassengerService
 {
-    //private readonly IPassengerRepository _repository;
-
-    //public PassengerService(IPassengerRepository repository)
-    //{
-    //    _repository = repository;
-    //}
-
-    //public async Task<bool> UpdatePassengerSeatAsync(int passengerId, int seatId)
-    //{
-    //    var passenger = await _repository.GetPassengerByIdAsync(passengerId);
-    //    if (passenger == null) return false;
-
-    //    passenger.SeatId = seatId;
-    //    await _repository.UpdatePassengerAsync(passenger);
-    //    return true;
-    //}
-
     private readonly IPassengerRepository _repository;
 
     public PassengerService(IPassengerRepository repository)
