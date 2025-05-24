@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using System.Text.Json;
+using System.Windows.Forms;
 using FlightLibrary;
 using FlightLibrary.DTO;
 using FlightLibrary.Model;
@@ -500,7 +501,6 @@ public partial class MainForm : Form
             return;
         }
 
-        // Find SeatId from current flight using selected seat code
         var seat = currentFlightDto?.Seats?.FirstOrDefault(s => s.SeatNumber == selectedSeatNumber);
         if (seat == null)
         {
@@ -521,8 +521,7 @@ public partial class MainForm : Form
             {
                 MessageBox.Show("Суудлыг амжилттай шинэчиллээ.");
                 await LoadFlightsFromApiAsync();
-                //await InitSignalRAsync();// Refresh data
-            
+
             }
             
             else if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
@@ -534,6 +533,7 @@ public partial class MainForm : Form
                 string error = await response.Content.ReadAsStringAsync();
                 MessageBox.Show("Алдаа: " + error);
             }
+            ShowFlightSeats(currentFlightDto);
         }
         catch (Exception ex)
         {
