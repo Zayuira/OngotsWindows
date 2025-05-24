@@ -1,16 +1,24 @@
 ﻿using FlightLibrary;
 using FlightLibrary.DTO;
-
+/// <summary>
+/// Нислэгийн бизнес логикыг хэрэгжүүлэгч сервис.
+/// </summary>
 public class FlightService : IFlightService
 {
     private readonly IFlightRepository _repository;
-
+    /// <summary>
+    /// Репозиторийг DI-аар авч хадгална.
+    /// </summary>
+    /// <param name="repository"></param>
     public FlightService(IFlightRepository repository)
     {
         _repository = repository;
     }
 
- 
+    /// <summary>
+    /// Бүх нислэгийн мэдээллийг асинхрон авах.
+    /// </summary>
+    /// <returns></returns>
     public async Task<List<FlightDtos>> GetAllFlightsAsync()
     {
         var flights = await _repository.GetAllFlightsAsync(); // Include Seats and Passengers!
@@ -39,7 +47,11 @@ public class FlightService : IFlightService
         }).ToList();
 
     }
-
+    /// <summary>
+    /// Нислэгийн төлөвийг шинэчлэх асинхрон функц.
+    /// </summary>
+    /// <param name="request">Шинэ төлөвийн хүсэлт.</param>
+    /// <returns></returns>
 
     public async Task<bool> UpdateFlightStatusAsync(UpdateFlightStatusRequest request)
     {

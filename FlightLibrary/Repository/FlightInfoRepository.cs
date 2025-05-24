@@ -7,14 +7,23 @@ using Microsoft.Extensions.Configuration;
 using FlightLibrary.Model;
 using Microsoft.Data.Sqlite;
 
+/// <summary>
+/// SQLite өгөгдлийн сантай ажилладаг нислэгийн дэлгэрэнгүй мэдээллийн репозиторийн хэрэгжилт.
+/// </summary>
 public class FlightInfoRepository : IFlightInfoRepository
 {
     private readonly string _connectionString;
-
+    /// <summary>
+    /// Конфигурациас холболтын мөрийг авна.
+    /// </summary>
+    /// <param name="config">IConfiguration объект</param>
     public FlightInfoRepository(IConfiguration config)
     {
         _connectionString = config.GetConnectionString("DefaultConnection");
     }
+    /// <summary>
+    /// Зорчигчийн ID-аар нислэгийн дэлгэрэнгүй мэдээлэл авах.
+    /// </summary>
     public async Task<FlightInfo> GetByPassengerIdAsync(int passengerId)
 {
     using var conn = new SqliteConnection(_connectionString);
@@ -43,6 +52,9 @@ public class FlightInfoRepository : IFlightInfoRepository
     }
     return null;
 }
+    /// <summary>
+    /// Бүх нислэгийн дэлгэрэнгүй мэдээллийг авах.
+    /// </summary>
     public async Task<List<FlightInfo>> GetAllAsync()
     {
         var result = new List<FlightInfo>();
@@ -71,7 +83,12 @@ public class FlightInfoRepository : IFlightInfoRepository
 
         return result;
     }
- 
+    /// <summary>
+    /// Нислэгийн төлөвийг шинэчлэх.
+    /// </summary>
+    /// <param name="flightId">нислэгийн ID</param>
+    /// <param name="newStatus">Нислэгийн шинэ төлөв</param>
+    /// <returns></returns>
     public async Task<bool> UpdateFlightStatusAsync(int flightId, string newStatus)
     {
         using var conn = new SqliteConnection(_connectionString);
@@ -96,6 +113,11 @@ public class FlightInfoRepository : IFlightInfoRepository
 
         return affected1 > 0 && affected2 > 0;
     }
+    /// <summary>
+    /// Нислэгийн ID-аар нислэгийн дэлгэрэнгүй мэдээлэл авах.
+    /// </summary>
+    /// <param name="flightId">Нислэгийн ID</param>
+    /// <returns></returns>
     public async Task<FlightInfo> GetByFlightIdAsync(int flightId)
     {
         using var conn = new SqliteConnection(_connectionString);
@@ -123,6 +145,11 @@ public class FlightInfoRepository : IFlightInfoRepository
         }
         return null;
     }
+    /// <summary>
+    /// Нислэгийн дугаараар нислэгийн дэлгэрэнгүй мэдээлэл авах.
+    /// </summary>
+    /// <param name="flightNumber">Нислэгийн дугаар</param>
+    /// <returns></returns>
     public async Task<FlightInfo> GetByFlightNumberAsync(string flightNumber)
     {
         using var conn = new SqliteConnection(_connectionString);
@@ -150,6 +177,11 @@ public class FlightInfoRepository : IFlightInfoRepository
         }
         return null;
     }
+    /// <summary>
+    /// FlightStatusEnum индексийг string төлвөөс олж авна.
+    /// </summary>
+    /// <param name="status">Нислэгийн төлөв</param>
+    /// <returns></returns>
     private int GetFlightStatusEnumIndex(string status)
     {
         return status.ToLower() switch
