@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
 [Route("api/passenger")]
@@ -12,22 +7,28 @@ public class PassengerController : ControllerBase
     private readonly IPassengerService _passengerService;
     private readonly SeatReservationQueueService _queueService;
 
-    public PassengerController(SeatReservationQueueService queueService)
-    {
-        _queueService = queueService;
-    }
-    public PassengerController(IPassengerService passengerService)
+    public PassengerController(IPassengerService passengerService, SeatReservationQueueService queueService)
     {
         _passengerService = passengerService;
+        _queueService = queueService;
     }
 
     /// <summary>
-    /// Update a passenger's seat assignment.
+    /// Queue ашиглан суудал захиалах (recommended)
     /// </summary>
-    /// <param name="id">Passenger ID</param>
-    /// <param name="request">Seat assignment request</param>
-    /// <returns>NoContent on success, NotFound if passenger or seat not found, BadRequest on invalid input</returns>
     [HttpPut("{id}/seat")]
+    public async Task<IActionResult> ReserveSeat(int id, [FromBody] ReserveSeatRequest req)
+    {
+        var result = await _queueService.EnqueueReservation(id, req.SeatId);
+        if (!result)
+            return Conflict("Суудал аль хэдийн захиалсан байна.");
+        return Ok();
+    }
+
+    /// <summary>
+    /// Шууд суудал оноох (queue ашиглахгүй)
+    /// </summary>
+    [HttpPut("{id}/seat/direct")]
     public async Task<IActionResult> UpdatePassengerSeat(int id, [FromBody] UpdatePassengerSeatRequest request)
     {
         if (request == null || request.SeatId <= 0)
@@ -42,18 +43,7 @@ public class PassengerController : ControllerBase
         }
         catch (Exception ex)
         {
-            // Лог бичих боломжтой
             return StatusCode(500, "Internal server error: " + ex.Message);
         }
-    }
-   
-
-    [HttpPut("{id}/seat")]
-    public async Task<IActionResult> ReserveSeat(int id, [FromBody] ReserveSeatRequest req)
-    {
-        var result = await _queueService.EnqueueReservation(id, req.SeatId);
-        if (!result)
-            return Conflict("Суудал аль хэдийн захиалсан байна.");
-        return Ok();
     }
 }
